@@ -1,5 +1,7 @@
 package com.tipster.betfair.accounts
 
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.opensymphony.sitemesh.Content
 import com.tipster.betfair.BaseService
 import grails.transaction.Transactional
@@ -44,17 +46,38 @@ class AccountService extends BaseService {
             ]
 
             response.success = {response, json ->
-                log.error "Response retrieved and is: "
-                log.error response
+                log.debug "Response retrieved and is: "
+                log.debug response
 
-                log.error "Response data are: "
-                log.error json
+                log.debug "Response data are: "
+                log.debug json
 
-                log.error "Result in response is: "
-                log.error json.result
+                def developerApps = new ArrayList(1)
 
-                DeveloperApp developerApp = new DeveloperApp(new JsonSlurper().parseText(json.result[0]))
-                log.error developerApp.appName
+                for (def developerAppJson : json.result) {
+                    DeveloperApp developerApp = new DeveloperApp()
+                    developerApp.appId = developerAppJson.appId
+                    developerApp.appName = developerAppJson.appName
+
+                    def appVersions = developerAppJson.appVersions
+                    for (def appVersion : appVersions) {
+                        log.error "Application version: " + appVersion
+                        DeveloperAppVersion developerAppVersion = new DeveloperAppVersion()
+                        developerAppVersion.active = appVersion.active
+                        developerAppVersion.applicationKey = appVersion.applicationKey
+                        developerAppVersion.delayData = appVersion.delayData
+                        developerAppVersion.owner = appVersion.owner
+                        developerAppVersion.ownerManaged = appVersion.ownerManaged
+                        developerAppVersion.subscriptionRequired = appVersion.subscriptionRequired
+                        developerAppVersion.version = appVersion.version
+                        developerAppVersion.versionId = appVersion.versionId
+                        developerApp.addToAppVersions(developerAppVersion)
+                    }
+
+                    developerApps.add(developerApp)
+                }
+
+                return developerApps
             }
         }
     }

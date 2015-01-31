@@ -23,12 +23,12 @@
         </h4>
     </div>
 
-    <div id="persistedAccounts">
-        <g:render template="persistedAccounts" model="[developerApps: developerApps]"/>
-    </div>
-
     <div id="retrievedAccounts">
         <g:render template="betfairAccounts"/>
+    </div>
+
+    <div id="persistedAccounts">
+        <g:render template="persistedAccounts" model="[developerApps: developerApps]"/>
     </div>
 
 </body>

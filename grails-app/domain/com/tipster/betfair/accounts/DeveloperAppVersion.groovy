@@ -3,16 +3,15 @@ package com.tipster.betfair.accounts
 class DeveloperAppVersion {
 
     String owner
+    Boolean ownerManaged
 
     Long versionId
     String version
 
     String applicationKey
+    Boolean subscriptionRequired
 
     Boolean delayData
-    Boolean subscriptionRequired
-    Boolean ownerManaged
-
     Boolean active
 
     static belongsTo = [developerApp: DeveloperApp]
