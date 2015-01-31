@@ -7,6 +7,7 @@
 //
 //= require jquery
 //= require bootstrap
+//= require notify-combined
 //= require_tree .
 //= require_self
 

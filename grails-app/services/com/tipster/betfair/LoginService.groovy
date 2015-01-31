@@ -29,7 +29,6 @@ class LoginService extends BaseService {
     def grailsApplication
 
     def retrieveSessionToken() {
-
         String sessionToken = "Z99kctirgpsL7o/aPqKfpQfa8SPiaDzvQh+brO54KlI="
 
         String username = grailsApplication.config.betfair.username
@@ -52,12 +51,7 @@ class LoginService extends BaseService {
         nvps.add(new BasicNameValuePair("password", password));
 
         httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-
-
         httpPost.setHeader("X-Application", applicationKey);
-
-
-        System.out.println("executing request" + httpPost.getRequestLine());
 
         HttpResponse response = httpClient.execute(httpPost);
         HttpEntity entity = response.getEntity();

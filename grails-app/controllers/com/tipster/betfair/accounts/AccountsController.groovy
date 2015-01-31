@@ -11,17 +11,13 @@ class AccountsController {
 
     def retrieveBetfairAccounts() {
         try {
-            accountService.retrieveApplicationKeys();
-
-            render (contentType: 'application/json') {
-                ['success': true, 'message': message(code: 'accounts.management.retrieved.accounts.successfully')]
-            }
+            def developerApps = accountService.retrieveApplicationKeys();
+            render template: 'accountsList', model: [developerApps: developerApps]
         } catch (ex) {
+            log.error "Failed to retrieve accounts from betfair.", ex
             render (contentType: 'application/json') {
-                ['success': true, 'message': message(code: 'accounts.management.retrieve.accounts.failed')]
+                ['success': false, 'message': message(code: 'accounts.management.retrieve.accounts.failed')]
             }
         }
-
-
     }
 }
