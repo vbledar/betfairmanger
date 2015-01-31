@@ -90,9 +90,9 @@ environments {
         grails.logging.jul.usebridge = true
 
         betfair {
-            applicationKey = "XId6sERnHl7CnBtu"
-            username = "vbledar"
-            password = "@ULCJpH2"
+            applicationKey = "CXQs7I5AmOYwVmHA"
+            username = "tipsterapi"
+            password = "tipster112015"
             certificatePassword = "tipster112015"
             certificateFilename = "C:\\client-2048.p12"
 

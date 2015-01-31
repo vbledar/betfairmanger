@@ -65,8 +65,10 @@ class LoginService extends BaseService {
         if (entity != null) {
             String responseString = EntityUtils.toString(entity);
             JSONElement responseJson = grails.converters.JSON.parse(responseString)
-            if (responseJson.loginStatus && responseJson.loginStatus == 'SUCCESS')
+            if (responseJson.loginStatus && responseJson.loginStatus == 'SUCCESS') {
                 sessionToken = responseJson.sessionToken
+				log.error "Session token is: " + sessionToken
+			}
             else {
                 log.error "Failed to retrieve session token because:"
                 log.error responseJson.loginStatus
