@@ -10,7 +10,6 @@
         <span class="glyphicon glyphicon-download"></span> <g:message
             code="accounts.management.button.retrieve.accounts.betfair"/>
     </g:link>
-    <g:link elementId=""
 </div>
 
 <div id="betfairAccountsContainer">
