@@ -104,6 +104,7 @@ environments {
                     bettingApiVersion = "v1.0/"
 
                     actionListEvents = "listEvents"
+                    actionListCountries = "listCountries"
                 }
                 accounts {
                     accountsEndpoint = "https://developer.betfair.com/api.betfair.com/exchange/account/json-rpc/v1"
@@ -141,4 +142,6 @@ log4j.main = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
+
+    debug 'grails.app'
 }

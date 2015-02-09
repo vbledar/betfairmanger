@@ -1,25 +1,29 @@
 <div class="page-header">
     <h5>
-        <g:message code="accounts.management.betfair.accounts"/>
+        <g:message code="countries.management.betfair.countries"/>
     </h5>
 </div>
 
+<div class="row">
+    <div class="col-sm-12">
         <div class="btn-group" role="group">
-            <g:link elementId="retrieveBetfairAccounts" controller="accounts" action="retrieveBetfairAccounts"
+            <g:link elementId="retrieveBetfairCountries" controller="events" action="retrieveBetfairCountries"
                     class="btn btn-info">
                 <span class="glyphicon glyphicon-download"></span> <g:message
-                    code="accounts.management.button.retrieve.accounts.betfair"/>
+                    code="countries.management.button.retrieve.countries.betfair"/>
             </g:link>
-            <g:link elementId="persistAllAccounts" controller="accounts" action="persistBetfairAccounts"
+            <g:link elementId="persistAllAccounts" controller="events" action="persistBetfairCountries"
                     class="btn btn-info">
                 <span class="glyphicon glyphicon-cloud-upload"></span> <g:message
-                    code="accounts.management.button.persist.betfair.accounts"/>
+                    code="countries.management.button.persist.betfair.countries"/>
             </g:link>
         </div>
+    </div>
+</div>
 
 <br/>
 
-<div id="betfairAccountsContainer">
+<div id="betfairCountriesContainer">
 
 </div>
 
@@ -27,7 +31,7 @@
 <script type="application/javascript">
 
     $(function () {
-        $('#retrieveBetfairAccounts').off('click').on('click', function (event) {
+        $('#retrieveBetfairCountries').off('click').on('click', function (event) {
             event.preventDefault();
 
             var url = $(this).attr('href')
@@ -42,7 +46,7 @@
 
                 console.log("POST server response successful");
                 console.log(data);
-                $('#betfairAccountsContainer').html(data);
+                $('#betfairCountriesContainer').html(data);
             }).fail(function (data) {
                 console.log("POST failed.");
                 console.log(data);
@@ -64,7 +68,7 @@
 
                 console.log("POST server response successful");
                 console.log(data);
-                $('#persistedAccountsContainer').html(data);
+                $('#persistedCountriesContainer').html(data);
             }).fail(function (data) {
                 console.log("POST failed.");
                 console.log(data);

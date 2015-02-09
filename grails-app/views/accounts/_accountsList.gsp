@@ -31,11 +31,16 @@
         <th>
             <g:message code="form.field.developer.app.version.active"/>
         </th>
+        <g:if test="${showActions}">
+            <th>
+
+            </th>
+        </g:if>
         </thead>
 
         <g:each in="${developerApps}" var="developerApp">
             <g:each in="${developerApp?.appVersions}" var="appVersion">
-                <tr class="${appVersion?.active ? 'success' : ''}">
+                <tr id="accountRow${appVersion?.id}" class="${appVersion?.active ? 'success' : ''}">
                     <td>
                         ${developerApp?.appId}
                     </td>
@@ -66,6 +71,15 @@
                     <td>
                         ${appVersion?.active}
                     </td>
+                    <g:if test="${showActions}">
+                        <th>
+                            <div class="btn-group">
+                                <g:link controller="accounts" action="deleteAccount" id="${appVersion?.id}" class="btn btn-danger">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </g:link>
+                            </div>
+                        </th>
+                    </g:if>
                 </tr>
             </g:each>
         </g:each>

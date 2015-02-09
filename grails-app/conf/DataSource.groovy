@@ -14,7 +14,7 @@ hibernate {
 environments {
     development {
         dataSource {
-            dbCreate = "create-update"
+//            dbCreate = "update"
             driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
             username = "tipster11"
             password = "%^NHkiju>lki!"
@@ -24,7 +24,7 @@ environments {
     }
     test {
         dataSource {
-            dbCreate = "create-update"
+//            dbCreate = "update"
             driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
             username = "tipster11"
             password = "%^NHkiju>lki!"
