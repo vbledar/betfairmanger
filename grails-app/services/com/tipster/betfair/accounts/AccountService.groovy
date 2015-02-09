@@ -18,7 +18,7 @@ class AccountService extends BaseService {
     /**
      * Retrieve application
      */
-    def retrieveApplicationKeys() {
+    def retrieveApplicationKeys(Boolean persist) {
 
         String sessionToken = loginService.retrieveSessionToken()
 
@@ -46,22 +46,33 @@ class AccountService extends BaseService {
             ]
 
             response.success = {response, json ->
-                log.debug "Response retrieved and is: "
-                log.debug response
+                log.info "Request was successful."
+                log.info "Processing retrieved accounts information from betfair."
 
                 log.debug "Response data are: "
                 log.debug json
 
+                if (json.error) {
+                    Boolean errorProcess = this.processError(json)
+                    return
+                }
+
+                log.debug "Create an array list to store developer application retrieved from betfair."
                 def developerApps = new ArrayList(1)
 
+                log.debug "About to process retrieved information."
                 for (def developerAppJson : json.result) {
                     DeveloperApp developerApp = new DeveloperApp()
                     developerApp.appId = developerAppJson.appId
                     developerApp.appName = developerAppJson.appName
 
+                    log.debug "Processing application " + developerApp.appName
+
                     def appVersions = developerAppJson.appVersions
+
+                    log.debug "About to process application versions retrieved information"
                     for (def appVersion : appVersions) {
-                        log.error "Application version: " + appVersion
+                        log.debug "Application version: " + appVersion
                         DeveloperAppVersion developerAppVersion = new DeveloperAppVersion()
                         developerAppVersion.active = appVersion.active
                         developerAppVersion.applicationKey = appVersion.applicationKey
@@ -72,13 +83,36 @@ class AccountService extends BaseService {
                         developerAppVersion.version = appVersion.version
                         developerAppVersion.versionId = appVersion.versionId
                         developerApp.addToAppVersions(developerAppVersion)
+
+                        log.debug "Application key processed " + developerAppVersion.applicationKey
                     }
 
                     developerApps.add(developerApp)
                 }
 
+                if (persist) {
+                    developerApps.each {
+                        DeveloperApp developerApp = DeveloperApp.findByAppId(it.appId)
+                        if (developerApp) {
+                            log.debug "Developer application account found in database. It will be updated."
+                            it.id = developerApp.id
+                        }
+
+                        if (!it.save()) {
+                            log.error "Failed to persist developer application account"
+                            it.errors.each {
+                                log.error it
+                            }
+                        }
+                    }
+                }
+
                 return developerApps
             }
         }
+    }
+
+    def deleteAccount(DeveloperAppVersion developerAppVersion) {
+
     }
 }
