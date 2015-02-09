@@ -98,7 +98,7 @@ environments {
 
             api {
                 betting {
-                    exchangeEndpoint = "https://developer.betfair.com/visualisers/api-ng-sports-operations/"
+                    exchangeEndpoint = "https://developer.betfair.com/api.betfair.com/exchange/betting/json-rpc/v1"
 
                     bettingApi = "SportsAPING/"
                     bettingApiVersion = "v1.0/"

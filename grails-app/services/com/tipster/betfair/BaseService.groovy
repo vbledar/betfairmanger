@@ -26,7 +26,10 @@ abstract class BaseService {
 
         if (errorInformation.error) {
             def errorObject = errorInformation.error
-            BetfairException betfairException = BetfairException.createBetfairException(errorObject.data)
+            BetfairException betfairException = null
+            if (errorObject.data) {
+                betfairException = BetfairException.createBetfairException(errorObject.data)
+            }
             BetfairError betfairError = new BetfairError(code: errorObject.code, message: errorObject.message, betfairException: betfairException)
             if (!betfairError.save()) {
                 log.error "Failed to persist betfair error."
