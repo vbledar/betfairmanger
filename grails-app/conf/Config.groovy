@@ -92,8 +92,8 @@ environments {
         betfair {
             applicationKey = "CXQs7I5AmOYwVmHA"
 
-            username = "vbledar"
-            password = "@ULCJpH2"
+            username = "tipsterapi"
+            password = "tipster112015"
             certificatePassword = "tipster112015"
             certificateFilename = "C:\\client-2048.p12"
 

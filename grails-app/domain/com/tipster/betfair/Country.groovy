@@ -16,7 +16,10 @@ class Country {
         for (String isoCountry : isoCountries) {
             if (isoCountry.equalsIgnoreCase(this.countryCode)) {
                 Locale locale = new Locale(this.countryCode)
-                return locale.getDisplayCountry()
+                log.debug locale.getDisplayCountry()
+                log.debug locale.getDisplayName()
+                log.debug locale.getDisplayLanguage()
+                return locale.getDisplayName()
             }
         }
     }

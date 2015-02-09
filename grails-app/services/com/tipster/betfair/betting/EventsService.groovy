@@ -73,10 +73,12 @@ class EventsService extends BaseService {
 
                 if (persist) {
                     countries.each {
-                        if (!it.save()) {
-                            log.error "Failed to persist country."
-                            it.errors.each {
-                                log.error it
+                        if (!Country.findByCountryCode(it.countryCode)) {
+                            if (!it.save()) {
+                                log.error "Failed to persist country."
+                                it.errors.each {
+                                    log.error it
+                                }
                             }
                         }
                     }
