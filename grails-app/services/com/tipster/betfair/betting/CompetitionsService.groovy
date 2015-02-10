@@ -42,24 +42,29 @@ class CompetitionsService {
 
         Competition competition
         jsonResponse?.result?.each {
-            if (it.competition) {
-                // attempt to find the country information for competition
-                String country3LetterCode = it.competitionRegion
-                CountryInformation countryInformation = CountryInformation.findByIso3LetterCode(country3LetterCode)
-                Country country = Country.findByCountryCode(countryInformation?.iso2LetterCode)
+            log.debug "Processing competition with data: " + it
+            try {
+                if (it.competition) {
+                    // attempt to find the country information for competition
+                    String country3LetterCode = it.competitionRegion
+                    CountryInformation countryInformation = CountryInformation.findByIso3LetterCode(country3LetterCode)
+                    Country country = Country.findByCountryCode(countryInformation?.iso2LetterCode)
 
-                // create a new competition instance
-                competition = new Competition(competitionId: it?.competition?.id, competitionName: it?.competition?.name, country: country)
+                    // create a new competition instance
+                    competition = new Competition(competitionId: it?.competition?.id, competitionName: it?.competition?.name, country: country)
 
-                // attempt to persist the competition instance
-                if (!competition.save()) {
-                    log.error "Failed to persist competition with id [" + it?.competition?.id + "] and name [" + it?.competition?.name + "]."
-                    competition?.errors?.each {
-                        log.error it
+                    // attempt to persist the competition instance
+                    if (!competition.save()) {
+                        log.error "Failed to persist competition with id [" + it?.competition?.id + "] and name [" + it?.competition?.name + "]."
+                        competition?.errors?.each {
+                            log.error it
+                        }
+                    } else {
+                        competitions.add(competition)
                     }
-                } else {
-                    competitions.add(competition)
                 }
+            } catch(ex) {
+                log.error "An unhandable exception occurred.", ex
             }
         }
 
