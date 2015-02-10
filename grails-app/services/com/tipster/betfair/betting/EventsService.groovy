@@ -34,13 +34,14 @@ class EventsService extends BaseService {
             response.success = { response, json ->
                 log.info "Request was successful for method: [" + rpcRequest.method + "]."
                 log.debug json
-                if (json.error) {
-                    log.info "Betfair response has errors."
-                    log.debug json.error
-                    BetfairError betfairError = this.processError(json)
-                    throw new BetfairWrapperException(betfairError: betfairError)
+                if (json.result) {
+                    return json
                 }
-                return json
+
+                log.info "Betfair response has errors."
+                log.debug json.error
+                BetfairError betfairError = this.processError(json)
+                throw new BetfairWrapperException(betfairError: betfairError)
             }
 
             response.failure = {response ->
