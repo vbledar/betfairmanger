@@ -42,7 +42,6 @@ class CompetitionsService {
 
         Competition competition
         jsonResponse?.result?.each {
-            log.debug "Processing competition with data: " + it
             try {
                 if (it.competition) {
                     log.debug "Competition region: " + it.competitionRegion
