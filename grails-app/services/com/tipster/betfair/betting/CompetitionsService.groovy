@@ -45,6 +45,10 @@ class CompetitionsService {
             log.debug "Processing competition with data: " + it
             try {
                 if (it.competition) {
+                    log.debug "Competition region: " + it.competitionRegion
+                    log.debug "Competition id: " + it.competition.id
+                    log.debug "Competition name: " + it.competition.name
+
                     // attempt to find the country information for competition
                     String country3LetterCode = it.competitionRegion
                     CountryInformation countryInformation = CountryInformation.findByIso3LetterCode(country3LetterCode)
