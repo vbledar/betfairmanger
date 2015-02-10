@@ -6,6 +6,7 @@ import com.tipster.betfair.MarketFilter
 import com.tipster.betfair.error.BetfairError
 import com.tipster.betfair.exceptions.BetfairWrapperException
 import com.tipster.betfair.util.json.JsonConverter
+import com.tipster.betfair.utils.http.JsonRpcRequest
 import grails.transaction.Transactional
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
@@ -17,34 +18,21 @@ class EventsService extends BaseService {
     public static final String BETFAIR_API_ID = "1"
     public static final String BETFAIR_JSON_RPC_VERSION = "2.0"
 
-    def executeBetfairApiCall(String id, String jsonRpc, String action, MarketFilter marketFilter) {
+    def executeBetfairApiCall(JsonRpcRequest rpcRequest) {
         String sessionToken = loginService.retrieveSessionToken()
         String applicationKey = grailsApplication.config.betfair.applicationKey
         String endpoint = grailsApplication.config.betfair.api.betting.exchangeEndpoint
-        String api = grailsApplication.config.betfair.api.betting.bettingApi
-        String apiVersion = grailsApplication.config.betfair.api.betting.bettingApiVersion
 
-        log.debug "Endpoint: " + endpoint
-        log.debug "API: " + api
-        log.debug "Version: " + apiVersion
-        log.debug "Action: " + action
-
-        String method = api + apiVersion + action
-        log.debug "Generated method is: " + method
+        log.debug JsonConverter.convertToJson(rpcRequest)
 
         def http = new HTTPBuilder(endpoint)
         http.request(Method.POST, ContentType.JSON) { request ->
             headers."X-Application" = applicationKey
             headers."X-Authentication" = sessionToken
-            body = [
-                    id    : id,
-                    jsonrpc: jsonRpc,
-                    method: method,
-                    params: [ filter: [JsonConverter.convertToJson(marketFilter)]]
-            ]
+            body = [JsonConverter.convertToJson(rpcRequest)]
 
             response.success = { response, json ->
-                log.info "Request was successful for method: [" + method + "]."
+                log.info "Request was successful for method: [" + rpcRequest.method + "]."
                 if (json.error) {
                     log.info "Betfair response has errors."
                     BetfairError betfairError = this.processError(json)
@@ -54,7 +42,7 @@ class EventsService extends BaseService {
             }
 
             response.failure = {response ->
-                log.info "Request was unsuccessful for method [" + method + "]."
+                log.info "Request was unsuccessful for method [" + rpcRequest.method + "]."
                 log.error "Retrieve response from server is: "
                 log.error "Response status is: [" + response.status + "]."
                 log.error response
@@ -64,12 +52,23 @@ class EventsService extends BaseService {
     }
 
     def getListOfCountries(Boolean persist) {
+        String api = grailsApplication.config.betfair.api.betting.bettingApi
+        String apiVersion = grailsApplication.config.betfair.api.betting.bettingApiVersion
+        String action = grailsApplication.config.betfair.api.betting.actionListCountries
 
         MarketFilter marketFilter = new MarketFilter()
         marketFilter.addExchangeId("1")
+        Map<String, Object> params = new HashMap<>()
+        params.put("filter", marketFilter)
 
-        String action = grailsApplication.config.betfair.api.betting.actionListCountries
-        def jsonResponse = executeBetfairApiCall(BETFAIR_API_ID, BETFAIR_JSON_RPC_VERSION, action, marketFilter)
+        JsonRpcRequest rpcRequest = new JsonRpcRequest()
+        rpcRequest.id = BETFAIR_API_ID
+        rpcRequest.jsonrpc = BETFAIR_JSON_RPC_VERSION
+        rpcRequest.method = api + apiVersion + action
+        rpcRequest.params = params
+
+
+        def jsonResponse = executeBetfairApiCall(rpcRequest)
 
         log.debug "Create an array list to store countries retrieved from betfair."
         def countries = new ArrayList(1)

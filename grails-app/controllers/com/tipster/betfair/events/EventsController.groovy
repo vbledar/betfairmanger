@@ -8,6 +8,8 @@ class EventsController extends BaseController {
     def eventsService
 
     def manageCountries() {
+        if (!params.max)
+            params.max = 10
         def countries = Country.list(params)
         render view: 'country/manageCountries', model: [countries: countries]
     }
