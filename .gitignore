@@ -1,7 +1,5 @@
  Created by https://www.gitignore.io
 
-grails-app/services/com/tipster/betfair/LoginService.groovy
-
 ### Grails ###
 # .gitignore for Grails 1.2 and 1.3
 

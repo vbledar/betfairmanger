@@ -76,7 +76,7 @@ class EventsService extends BaseService {
         def countries = new ArrayList(1)
 
         log.debug "About to process retrieved information."
-        for (def countryCode : json.result) {
+        for (def countryCode : jsonResponse.result) {
             Country country = new Country(countryCode: countryCode.countryCode)
             countries.add(country)
         }
