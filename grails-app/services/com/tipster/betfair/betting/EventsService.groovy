@@ -15,7 +15,7 @@ import groovyx.net.http.Method
 @Transactional
 class EventsService extends BaseService {
 
-    public static final String BETFAIR_API_ID = "1"
+    public static final Integer BETFAIR_API_ID = 1
     public static final String BETFAIR_JSON_RPC_VERSION = "2.0"
 
     def executeBetfairApiCall(JsonRpcRequest rpcRequest) {
@@ -33,8 +33,10 @@ class EventsService extends BaseService {
 
             response.success = { response, json ->
                 log.info "Request was successful for method: [" + rpcRequest.method + "]."
+                log.debug json
                 if (json.error) {
                     log.info "Betfair response has errors."
+                    log.debug json.error
                     BetfairError betfairError = this.processError(json)
                     throw new BetfairWrapperException(betfairError: betfairError)
                 }
@@ -66,7 +68,6 @@ class EventsService extends BaseService {
         rpcRequest.jsonrpc = BETFAIR_JSON_RPC_VERSION
         rpcRequest.method = api + apiVersion + action
         rpcRequest.params = params
-
 
         def jsonResponse = executeBetfairApiCall(rpcRequest)
 

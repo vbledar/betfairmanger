@@ -5,7 +5,7 @@ package com.tipster.betfair.utils.http
  */
 class JsonRpcRequest {
 
-    String id = "1"
+    Integer id = 1
     String jsonrpc = "2.0"
     String method
     Map<String, Object> params
