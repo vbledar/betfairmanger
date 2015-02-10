@@ -2,8 +2,10 @@ package com.tipster.betfair.betting
 
 import com.tipster.betfair.BaseService
 import com.tipster.betfair.Country
+import com.tipster.betfair.MarketFilter
 import com.tipster.betfair.accounts.DeveloperApp
 import com.tipster.betfair.accounts.DeveloperAppVersion
+import com.tipster.betfair.util.json.JsonConverter
 import grails.transaction.Transactional
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
@@ -14,6 +16,8 @@ class EventsService extends BaseService {
 
     def getListOfCountries(Boolean persist) {
         String sessionToken = loginService.retrieveSessionToken()
+
+        String applicationKey = grailsApplication.config.betfair.applicationKey
 
         String endpoint = grailsApplication.config.betfair.api.betting.exchangeEndpoint
         String api = grailsApplication.config.betfair.api.betting.bettingApi
@@ -30,15 +34,23 @@ class EventsService extends BaseService {
 
         def http = new HTTPBuilder(endpoint)
         http.request(Method.POST, ContentType.JSON) { request ->
+            headers."X-Application" = applicationKey
             headers."X-Authentication" = sessionToken
             body = [
                     id: 1,
                     jsonrpc: "2.0",
                     method: method,
-                    params: [ ]
+                    params: [
+                            filter: [
+                                    exchangeIds: [
+                                            1
+                                    ]
+                            ]
+                    ]
             ]
 
             response.success = {response, json ->
+
                 log.info "Request was successful."
                 log.info "Processing retrieved countries information from betfair."
 
