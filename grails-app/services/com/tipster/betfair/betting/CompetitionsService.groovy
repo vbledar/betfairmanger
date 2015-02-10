@@ -17,7 +17,7 @@ class CompetitionsService {
     def retrieveCompetitionsFromBetfair(Set<Country> countries) {
         String api = grailsApplication.config.betfair.api.betting.bettingApi
         String apiVersion = grailsApplication.config.betfair.api.betting.bettingApiVersion
-        String action = grailsApplication.config.betfair.api.betting.actionListCountries
+        String action = grailsApplication.config.betfair.api.betting.actionListCompetitions
 
         MarketFilter marketFilter = new MarketFilter()
         marketFilter.addExchangeId("1")                 // by default UK marketplace
