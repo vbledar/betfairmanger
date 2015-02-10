@@ -4,8 +4,6 @@
     </h5>
 </div>
 
-<div class="row">
-    <div class="col-sm-12">
         <div class="btn-group" role="group">
             <g:link elementId="retrieveBetfairAccounts" controller="accounts" action="retrieveBetfairAccounts"
                     class="btn btn-info">
@@ -18,8 +16,6 @@
                     code="accounts.management.button.persist.betfair.accounts"/>
             </g:link>
         </div>
-    </div>
-</div>
 
 <br/>
 

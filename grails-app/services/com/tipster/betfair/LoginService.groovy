@@ -29,7 +29,6 @@ class LoginService extends BaseService {
     def grailsApplication
 
     def retrieveSessionToken() {
-
         String sessionToken
 
         String username = grailsApplication.config.betfair.username
@@ -52,12 +51,7 @@ class LoginService extends BaseService {
         nvps.add(new BasicNameValuePair("password", password));
 
         httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-
-
         httpPost.setHeader("X-Application", applicationKey);
-
-
-        System.out.println("executing request" + httpPost.getRequestLine());
 
         HttpResponse response = httpClient.execute(httpPost);
         HttpEntity entity = response.getEntity();
@@ -65,12 +59,14 @@ class LoginService extends BaseService {
         if (entity != null) {
             String responseString = EntityUtils.toString(entity);
             JSONElement responseJson = grails.converters.JSON.parse(responseString)
-            if (responseJson.loginStatus && responseJson.loginStatus == 'SUCCESS')
+            if (responseJson.loginStatus && responseJson.loginStatus == 'SUCCESS') {
                 sessionToken = responseJson.sessionToken
+				log.error "Session token is: " + sessionToken
+			}
             else {
                 log.error "Failed to retrieve session token because:"
                 log.error responseJson.loginStatus
-                throw new Exception("Failed to retrieve session token because [" + responseJson.loginStatus + "].")
+                throw new Exception("Failed to retrieve session token.")
             }
         } else {
             log.error "Failed to retrieve session token because:"
