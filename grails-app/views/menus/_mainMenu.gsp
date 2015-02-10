@@ -28,7 +28,7 @@
                             </g:link>
                         </li>
                         <li>
-                            <g:link controller="events" action="manageCountries">
+                            <g:link controller="countries" action="manageCountries">
                                 <g:message code="countries.management.main.menu.item"/>
                             </g:link>
                         </li>
@@ -40,6 +40,20 @@
                     </ul>
                 </li>
             </ul>
+        <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                   aria-expanded="false">
+                    <g:message code="main.menu.events.management.menu"/> <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <g:link controller="competitions" action="manageCompetitions">
+                            <g:message code="competitions.management.main.menu.item"/>
+                        </g:link>
+                    </li>
+                </ul>
+            </li>
+        </ul>
 
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">Link</a></li>

@@ -7,12 +7,12 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="btn-group" role="group">
-            <g:link elementId="retrieveBetfairCountries" controller="events" action="retrieveBetfairCountries"
+            <g:link elementId="retrieveBetfairCountries" controller="countries" action="retrieveBetfairCountries"
                     class="btn btn-info">
                 <span class="glyphicon glyphicon-download"></span> <g:message
                     code="countries.management.button.retrieve.countries.betfair"/>
             </g:link>
-            <g:link elementId="persistAllAccounts" controller="events" action="persistBetfairCountries"
+            <g:link elementId="persistAllAccounts" controller="countries" action="persistBetfairCountries"
                     class="btn btn-info">
                 <span class="glyphicon glyphicon-cloud-upload"></span> <g:message
                     code="countries.management.button.persist.betfair.countries"/>

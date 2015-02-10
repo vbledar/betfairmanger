@@ -3,7 +3,7 @@ package com.tipster.betfair.events
 import com.tipster.BaseController
 import com.tipster.betfair.Country
 
-class EventsController extends BaseController {
+class CountriesController extends BaseController {
 
     def eventsService
 

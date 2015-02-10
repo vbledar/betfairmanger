@@ -25,7 +25,7 @@
                 <g:if test="${showActions}">
                     <th>
                         <div class="btn-group">
-                            <g:link controller="events" action="deleteCountry" id="${country?.countryCode}"
+                            <g:link controller="countries" action="deleteCountry" id="${country?.countryCode}"
                                     class="btn btn-danger">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </g:link>
