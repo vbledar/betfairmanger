@@ -1,5 +1,5 @@
 dataSource {
-//    pooled = true
+    pooled = true
 }
 hibernate {
     cache.use_second_level_cache = true
@@ -15,18 +15,21 @@ environments {
     development {
         dataSource {
 //            dbCreate = "update"
-//            driverClassName = "com.mysql.jdbc.Driver"
-//            dialect = "org.hibernate.dialect.MySQLDialect"
-//            username = "betfair"
-//            password = "betfair"
-//            url = "jdbc:mysql://localhost/betfair?useUnicode=true&characterEncoding=UTF-8"
-//            logSql = true
+            driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+            username = "tipster11"
+            password = "%^NHkiju>lki!"
+            url = "jdbc:sqlserver://k3nqcihx0j.database.windows.net:1433;database=Tipster11DB;user=tipster11@k3nqcihx0j;password=%^NHkiju>lki!;encrypt=true;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
+            logSql = true
         }
     }
     test {
         dataSource {
-            dbCreate = "update"
-            url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+//            dbCreate = "update"
+            driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+            username = "tipster11"
+            password = "%^NHkiju>lki!"
+            url = "jdbc:sqlserver://k3nqcihx0j.database.windows.net:1433;database=Tipster11DB;user=tipster11@k3nqcihx0j;password=%^NHkiju>lki!;encrypt=true;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
+            logSql = true
         }
     }
     production {

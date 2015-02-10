@@ -90,20 +90,22 @@ environments {
         grails.logging.jul.usebridge = true
 
         betfair {
-            applicationKey = "XId6sERnHl7CnBtu"
-            username = "vbledar"
-            password = "@ULCJpH2"
+            applicationKey = "CXQs7I5AmOYwVmHA"
+
+            username = "tipsterapi"
+            password = "tipster112015"
             certificatePassword = "tipster112015"
             certificateFilename = "C:\\client-2048.p12"
 
             api {
                 betting {
-                    exchangeEndpoint = "https://developer.betfair.com/visualisers/api-ng-sports-operations/"
+                    exchangeEndpoint = "https://developer.betfair.com/api.betfair.com/exchange/betting/json-rpc/v1"
 
                     bettingApi = "SportsAPING/"
                     bettingApiVersion = "v1.0/"
 
                     actionListEvents = "listEvents"
+                    actionListCountries = "listCountries"
                 }
                 accounts {
                     accountsEndpoint = "https://developer.betfair.com/api.betfair.com/exchange/account/json-rpc/v1"
@@ -141,4 +143,6 @@ log4j.main = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
+
+    debug 'grails.app'
 }

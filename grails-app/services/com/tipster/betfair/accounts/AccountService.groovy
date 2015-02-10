@@ -1,5 +1,7 @@
 package com.tipster.betfair.accounts
 
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.opensymphony.sitemesh.Content
 import com.tipster.betfair.BaseService
 import grails.transaction.Transactional
@@ -8,10 +10,6 @@ import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
-import org.codehaus.groovy.grails.web.binding.bindingsource.JsonDataBindingSourceCreator
-import org.codehaus.groovy.grails.web.json.JSONArray
-import grails.converters.*
-import org.codehaus.groovy.grails.web.json.*;
 import org.omg.CORBA.REBIND
 
 @Transactional
@@ -20,7 +18,7 @@ class AccountService extends BaseService {
     /**
      * Retrieve application
      */
-    def retrieveApplicationKeys() {
+    def retrieveApplicationKeys(Boolean persist) {
 
         String sessionToken = loginService.retrieveSessionToken()
 
@@ -48,27 +46,73 @@ class AccountService extends BaseService {
             ]
 
             response.success = {response, json ->
+                log.info "Request was successful."
+                log.info "Processing retrieved accounts information from betfair."
 
-                log.error "Result in response is: "
-                log.error json.result
+                log.debug "Response data are: "
+                log.debug json
 
-
-                DeveloperApp accounts = new DeveloperApp()
-                accounts.appId = json.result.appId
-                accounts.appName = json.result.appName
-
-                def jsonObject = JSON.parse(json.result.appVersions)
-                if (jsonObject instanceof Map) {
-                    log.error "Retrieve a json map."
+                if (json.error) {
+                    Boolean errorProcess = this.processError(json)
+                    return
                 }
 
-                if (jsonObject instanceof JSONArray) {
-                    log.error "Retrieve a json array"
+                log.debug "Create an array list to store developer application retrieved from betfair."
+                def developerApps = new ArrayList(1)
+
+                log.debug "About to process retrieved information."
+                for (def developerAppJson : json.result) {
+                    DeveloperApp developerApp = new DeveloperApp()
+                    developerApp.appId = developerAppJson.appId
+                    developerApp.appName = developerAppJson.appName
+
+                    log.debug "Processing application " + developerApp.appName
+
+                    def appVersions = developerAppJson.appVersions
+
+                    log.debug "About to process application versions retrieved information"
+                    for (def appVersion : appVersions) {
+                        log.debug "Application version: " + appVersion
+                        DeveloperAppVersion developerAppVersion = new DeveloperAppVersion()
+                        developerAppVersion.active = appVersion.active
+                        developerAppVersion.applicationKey = appVersion.applicationKey
+                        developerAppVersion.delayData = appVersion.delayData
+                        developerAppVersion.owner = appVersion.owner
+                        developerAppVersion.ownerManaged = appVersion.ownerManaged
+                        developerAppVersion.subscriptionRequired = appVersion.subscriptionRequired
+                        developerAppVersion.version = appVersion.version
+                        developerAppVersion.versionId = appVersion.versionId
+                        developerApp.addToAppVersions(developerAppVersion)
+
+                        log.debug "Application key processed " + developerAppVersion.applicationKey
+                    }
+
+                    developerApps.add(developerApp)
                 }
 
-                DeveloperApp developerApp = new DeveloperApp(new JsonSlurper().parseText(json.result[0]))
-                log.error "Developer application keys: " + developerApp.appName
+                if (persist) {
+                    developerApps.each {
+                        DeveloperApp developerApp = DeveloperApp.findByAppId(it.appId)
+                        if (developerApp) {
+                            log.debug "Developer application account found in database. It will be updated."
+                            it.id = developerApp.id
+                        }
+
+                        if (!it.save()) {
+                            log.error "Failed to persist developer application account"
+                            it.errors.each {
+                                log.error it
+                            }
+                        }
+                    }
+                }
+
+                return developerApps
             }
         }
+    }
+
+    def deleteAccount(DeveloperAppVersion developerAppVersion) {
+
     }
 }

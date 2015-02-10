@@ -30,7 +30,7 @@ class LoginService extends BaseService {
 
     def retrieveSessionToken() {
 
-        String sessionToken = "QnE7j6hfpV4v1By8wLwaGkac8cPWmKzIBjtpavcKqrQ="
+        String sessionToken = "3NpTqDAtYfSHduIF+Me5mCU0YWFnEWnvnofdoIktkyg="
 
 //        String username = grailsApplication.config.betfair.username
 //        String password = grailsApplication.config.betfair.password
