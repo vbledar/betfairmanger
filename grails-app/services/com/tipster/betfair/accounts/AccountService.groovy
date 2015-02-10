@@ -8,6 +8,10 @@ import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
+import org.codehaus.groovy.grails.web.binding.bindingsource.JsonDataBindingSourceCreator
+import org.codehaus.groovy.grails.web.json.JSONArray
+import grails.converters.*
+import org.codehaus.groovy.grails.web.json.*;
 import org.omg.CORBA.REBIND
 
 @Transactional
@@ -44,17 +48,26 @@ class AccountService extends BaseService {
             ]
 
             response.success = {response, json ->
-                log.error "Response retrieved and is: "
-                log.error response
-
-                log.error "Response data are: "
-                log.error json
 
                 log.error "Result in response is: "
                 log.error json.result
 
+
+                DeveloperApp accounts = new DeveloperApp()
+                accounts.appId = json.result.appId
+                accounts.appName = json.result.appName
+
+                def jsonObject = JSON.parse(json.result.appVersions)
+                if (jsonObject instanceof Map) {
+                    log.error "Retrieve a json map."
+                }
+
+                if (jsonObject instanceof JSONArray) {
+                    log.error "Retrieve a json array"
+                }
+
                 DeveloperApp developerApp = new DeveloperApp(new JsonSlurper().parseText(json.result[0]))
-                log.error developerApp.appName
+                log.error "Developer application keys: " + developerApp.appName
             }
         }
     }

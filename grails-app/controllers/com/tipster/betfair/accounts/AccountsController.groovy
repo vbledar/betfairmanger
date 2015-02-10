@@ -17,6 +17,7 @@ class AccountsController {
                 ['success': true, 'message': message(code: 'accounts.management.retrieved.accounts.successfully')]
             }
         } catch (ex) {
+            log.error "Something went wrong", ex
             render (contentType: 'application/json') {
                 ['success': true, 'message': message(code: 'accounts.management.retrieve.accounts.failed')]
             }
