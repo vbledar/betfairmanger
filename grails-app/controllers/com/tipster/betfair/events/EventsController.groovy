@@ -1,14 +1,20 @@
 package com.tipster.betfair.events
 
+import com.tipster.BaseController
 import com.tipster.betfair.Country
 
-class EventsController {
+class EventsController extends BaseController {
 
     def eventsService
 
     def manageCountries() {
-        def countries = Country.findAll()
+        def countries = Country.list(params)
         render view: 'country/manageCountries', model: [countries: countries]
+    }
+
+    def manageCountriesFiltered() {
+        def countries = Country.list(params)
+        render template: 'country/persistedCountriesFiltered', model: [countries: countries]
     }
 
     def retrieveBetfairCountries() {

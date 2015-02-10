@@ -74,7 +74,7 @@
                     <g:if test="${showActions}">
                         <th>
                             <div class="btn-group">
-                                <g:link controller="accounts" action="deleteAccount" id="${appVersion?.id}" class="btn btn-danger">
+                                <g:link controller="accounts" action="deleteAccount" data-element-id="${appVersion?.id}" class="btn btn-danger delete-application">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </g:link>
                             </div>
@@ -85,3 +85,38 @@
         </g:each>
     </table>
 </div>
+
+<script type="application/javascript">
+    $(function() {
+        $('.delete-application').off('click').on('click', function(event) {
+            event.preventDefault();
+
+            var parameters = {}
+            parameters.elementId = $(this).attr('data-element-id');
+            var url = $(this).attr('href');
+            $.post(url, parameters, function (data) {
+                console.log("POST executed");
+            }).done(function (data) {
+                console.log("POST success");
+                if (data.success === false) {
+                    console.log("POST failed");
+                    console.log("Server message is: " + data.message)
+                    showErrorMessage(data.message);
+                }
+
+                console.log("POST server response successful");
+                console.log(data);
+                showSuccessMessage(data.message);
+                $('#accountRow'+parameters.elementId).fadeToggle(500, function() {
+                    $(this).remove();
+                });
+            }).fail(function (data) {
+                console.log("POST failed.");
+                console.log(data);
+                showErrorMessage(data);
+            });
+        })
+
+    })
+
+</script>

@@ -15,8 +15,9 @@
                 </div>
             </g:if>
             <g:else>
-                <g:render template="country/countriesList"
-                          model="[countries: countries, showActions: Boolean.TRUE]"/>
+                <div id="persistedCountriesList">
+                    <g:render template="country/persistedCountriesFiltered" model="[countries: countries, showActions: Boolean.TRUE]"/>
+                </div>
             </g:else>
         </div>
     </div>

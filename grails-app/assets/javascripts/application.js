@@ -20,3 +20,19 @@ if (typeof jQuery !== 'undefined') {
 		});
 	})(jQuery);
 }
+
+function showInfoMessage(message) {
+    $.notify(message, 'info');
+}
+
+function showSuccessMessage(message) {
+    $.notify(message, 'success');
+}
+
+function showWarnMessage(message) {
+    $.notify(message, 'warn');
+}
+
+function showErrorMessage(message) {
+    $.notify(message, 'error');
+}

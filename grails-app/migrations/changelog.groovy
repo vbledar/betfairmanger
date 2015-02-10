@@ -115,4 +115,8 @@ databaseChangeLog = {
     }
 
 	include file: 'add-country-entity.groovy'
+
+	include file: 'add-country-infromation.groovy'
+
+	include file: 'add-competition-entity.groovy'
 }
