@@ -12,15 +12,7 @@ class Country {
     }
 
     String getCountryName() {
-        String[] isoCountries = Locale.getISOCountries()
-        for (String isoCountry : isoCountries) {
-            if (isoCountry.equalsIgnoreCase(this.countryCode)) {
-                Locale locale = new Locale(this.countryCode)
-                log.debug locale.getDisplayCountry()
-                log.debug locale.getDisplayName()
-                log.debug locale.getDisplayLanguage()
-                return locale.getDisplayName()
-            }
-        }
+        CountryInformation countryInformation = CountryInformation.findByIso2LetterCode(this.countryCode)
+        if (countryInformation) return countryInformation?.name
     }
 }

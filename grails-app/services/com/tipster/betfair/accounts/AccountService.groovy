@@ -16,7 +16,8 @@ import org.omg.CORBA.REBIND
 class AccountService extends BaseService {
 
     /**
-     * Retrieve application
+     * Retrieve BetFair applications under session token. The session token
+     * is related to a BetFair account.
      */
     def retrieveApplicationKeys(Boolean persist) {
 
@@ -112,7 +113,24 @@ class AccountService extends BaseService {
         }
     }
 
+    /**
+     * Delete a developer application version. If the developer application holds no more
+     * developer application versions it is deleted as well.
+     *
+     * @param developerAppVersion, the instance to delete.
+     *
+     * @return Boolean.TRUE if the instance was deleted successfully.
+     */
     def deleteAccount(DeveloperAppVersion developerAppVersion) {
+        DeveloperApp developerApp = developerAppVersion.developerApp
+        developerApp.appVersions.remove(developerAppVersion)
+
+        developerAppVersion.delete()
+
+        if (developerApp.appVersions.isEmpty())
+            developerApp.delete()
+
+        return Boolean.TRUE
 
     }
 }

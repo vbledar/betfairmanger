@@ -3,6 +3,7 @@ package com.tipster.betfair;
 import com.tipster.betfair.enums.MarketBettingType;
 import com.tipster.betfair.enums.OrderStatus;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -39,6 +40,13 @@ public class MarketFilter {
 	public void setExchangeIds(Set<String> exchangeIds) {
 		this.exchangeIds = exchangeIds;
 	}
+
+    public void addExchangeId(String exchangeId) {
+        if (this.exchangeIds == null) {
+            this.exchangeIds = new HashSet<String>();
+        }
+        this.exchangeIds.add(exchangeId);
+    }
 
 	public Set<String> getEventTypeIds() {
 		return eventTypeIds;

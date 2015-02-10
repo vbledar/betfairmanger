@@ -73,6 +73,8 @@ grails.project.dependency.resolution = {
 
         compile ":twitter-bootstrap:3.3.2.1"
 
+        compile ":remote-pagination:0.4.8"
+
         // Uncomment these to enable additional asset-pipeline capabilities
         //compile ":sass-asset-pipeline:1.9.0"
         //compile ":less-asset-pipeline:1.10.0"

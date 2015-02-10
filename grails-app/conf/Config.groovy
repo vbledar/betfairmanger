@@ -88,6 +88,9 @@ grails.hibernate.osiv.readonly = false
 environments {
     development {
         grails.logging.jul.usebridge = true
+        grails.serverURL = "http://192.168.2.5:8080" +
+                ""
+
 
         betfair {
             applicationKey = "CXQs7I5AmOYwVmHA"
@@ -95,7 +98,7 @@ environments {
             username = "tipsterapi"
             password = "tipster112015"
             certificatePassword = "tipster112015"
-            certificateFilename = "C:\\client-2048.p12"
+            certificateFilename = "/Users/vbledar/client-2048.p12"
 
             api {
                 betting {
@@ -106,6 +109,7 @@ environments {
 
                     actionListEvents = "listEvents"
                     actionListCountries = "listCountries"
+                    actionListCompetitions = "listCompetitions"
                 }
                 accounts {
                     accountsEndpoint = "https://developer.betfair.com/api.betfair.com/exchange/account/json-rpc/v1"

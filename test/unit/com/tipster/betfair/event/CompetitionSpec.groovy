@@ -1,4 +1,4 @@
-package com.tipster.betfair.betting
+package com.tipster.betfair.event
 
 import grails.test.mixin.TestFor
 import spock.lang.Specification

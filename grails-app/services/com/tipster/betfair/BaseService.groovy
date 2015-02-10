@@ -36,13 +36,12 @@ abstract class BaseService {
                 betfairError.errors.each {
                     log.error it
                 }
-                return Boolean.FALSE
+            } else {
+                return betfairError
             }
-            return Boolean.TRUE
         } else {
             log.debug "No error entry in error information"
             log.debug errorInformation
-            return Boolean.FALSE
         }
 
     }

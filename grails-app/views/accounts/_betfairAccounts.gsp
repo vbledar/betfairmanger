@@ -42,14 +42,18 @@
                 if (data.success === false) {
                     console.log("POST failed");
                     console.log("Server message is: " + data.message)
+                    showErrorMessage(data.message);
+                    return;
                 }
 
                 console.log("POST server response successful");
                 console.log(data);
                 $('#betfairAccountsContainer').html(data);
+                showSuccessMessage("Action completed successfully.")
             }).fail(function (data) {
                 console.log("POST failed.");
                 console.log(data);
+                showErrorMessage(data);
             });
         });
 
@@ -64,14 +68,18 @@
                 if (data.success === false) {
                     console.log("POST failed");
                     console.log("Server message is: " + data.message)
+                    showErrorMessage(data.message);
+                    return;
                 }
 
                 console.log("POST server response successful");
                 console.log(data);
                 $('#persistedAccountsContainer').html(data);
+                showSuccessMessage("Accounts were persisted successfully.");
             }).fail(function (data) {
                 console.log("POST failed.");
                 console.log(data);
+                showErrorMessage(data);
             })
         });
     });
