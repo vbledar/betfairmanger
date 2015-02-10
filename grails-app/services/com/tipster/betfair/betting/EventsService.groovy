@@ -40,7 +40,7 @@ class EventsService extends BaseService {
                     id    : id,
                     jsonrpc: jsonRpc,
                     method: method,
-                    params: [ filter: JsonConverter.convertToJson(marketFilter) ]
+                    params: [ filter: [JsonConverter.convertToJson(marketFilter)]]
             ]
 
             response.success = { response, json ->

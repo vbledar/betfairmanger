@@ -32,6 +32,11 @@
                                 <g:message code="countries.management.main.menu.item"/>
                             </g:link>
                         </li>
+                        <li>
+                            <g:link controller="errors" action="viewErrors">
+                                <g:message code="errors.management.main.menu.item"/>
+                            </g:link>
+                        </li>
                     </ul>
                 </li>
             </ul>
