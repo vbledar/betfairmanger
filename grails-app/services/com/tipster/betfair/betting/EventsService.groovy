@@ -69,7 +69,7 @@ class EventsService extends BaseService {
         marketFilter.addExchangeId("1")
 
         String action = grailsApplication.config.betfair.api.betting.actionListCountries
-        def jsonResponse = executeBetfairApiCall(BETFAIR_API_ID, BETFAIR_JSON_RPC_VERSION, action, )
+        def jsonResponse = executeBetfairApiCall(BETFAIR_API_ID, BETFAIR_JSON_RPC_VERSION, action, marketFilter)
 
         log.debug "Create an array list to store countries retrieved from betfair."
         def countries = new ArrayList(1)
