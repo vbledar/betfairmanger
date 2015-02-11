@@ -43,8 +43,8 @@ class CompetitionsService {
 
         Competition competition
 
-        def jsonSlurper = new JsonSlurper()
-        def competitionResults = jsonSlurper.parseText(jsonResponse.result)
+//        def jsonSlurper = new JsonSlurper()
+//        def competitionResults = jsonSlurper.parseText(jsonResponse.result)
         for (def competitionResult : jsonResponse.result) {
             log.debug "Attempting to process: " + competitionResult
             try {
