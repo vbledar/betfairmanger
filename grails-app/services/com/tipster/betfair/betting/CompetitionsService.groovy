@@ -63,7 +63,8 @@ class CompetitionsService {
                         competition = new Competition(competitionId: competitionResult?.competition?.id, competitionName: competitionResult?.competition?.name, country: country)
 
                         // attempt to persist the competition instance
-                        if (!competition.save()) {
+                        competition = competition.merge()
+                        if (!competition.validate()) {
                             log.error "Failed to persist competition with id [" + competitionResult?.competition?.id + "] and name [" + competitionResult?.competition?.name + "]."
                             competition?.errors?.each {
                                 log.error it
