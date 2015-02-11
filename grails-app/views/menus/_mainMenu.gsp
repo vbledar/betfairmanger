@@ -33,6 +33,11 @@
                             </g:link>
                         </li>
                         <li>
+                            <g:link controller="marketTypes" action="manageMarketTypes">
+                                <g:message code="market.types.management.main.menu.item"/>
+                            </g:link>
+                        </li>
+                        <li>
                             <g:link controller="errors" action="viewErrors">
                                 <g:message code="errors.management.main.menu.item"/>
                             </g:link>
