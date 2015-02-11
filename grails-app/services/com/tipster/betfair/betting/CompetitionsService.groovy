@@ -7,6 +7,8 @@ import com.tipster.betfair.MarketFilter
 import com.tipster.betfair.event.Competition
 import com.tipster.betfair.utils.http.JsonRpcRequest
 import grails.transaction.Transactional
+import net.sf.json.JSONObject
+import org.codehaus.groovy.grails.web.json.JSONArray
 
 @Transactional
 class CompetitionsService {
@@ -41,7 +43,10 @@ class CompetitionsService {
         def competitions = new ArrayList<Competition>(1)
 
         Competition competition
-        for (def competitionResult : jsonResponse?.result) {
+        JSONArray competitionResults = jsonResponse.getJSONArray("result")
+        for (int i=0; i<competitionResults.length(); i++) {
+//        for (def competitionResult : jsonResponse?.result) {
+            JSONObject competitionResult = competitionResults[i];
             try {
                 if (competitionResult.competition) {
                     log.debug "Competition region: " + competitionResult.competitionRegion
