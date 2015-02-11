@@ -45,7 +45,8 @@ class CompetitionsService {
 
         def jsonSlurper = new JsonSlurper()
         def competitionResults = jsonSlurper.parseText(jsonResponse.result)
-        for (def competitionResult : competitionResults) {
+        for (def competitionResult : jsonResponse.result) {
+            log.debug "Attempting to process: " + competitionResult
             try {
                 if (competitionResult.competition) {
                     log.debug "Competition region: " + competitionResult.competitionRegion
