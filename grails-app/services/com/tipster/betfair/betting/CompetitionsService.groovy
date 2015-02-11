@@ -7,9 +7,7 @@ import com.tipster.betfair.MarketFilter
 import com.tipster.betfair.event.Competition
 import com.tipster.betfair.utils.http.JsonRpcRequest
 import grails.transaction.Transactional
-import org.json.simple.JSONArray
-import org.json.simple.JSONObject
-import org.json.simple.parser.JSONParser
+import groovy.json.JsonSlurper
 
 @Transactional
 class CompetitionsService {
@@ -44,11 +42,10 @@ class CompetitionsService {
         def competitions = new ArrayList<Competition>(1)
 
         Competition competition
-        JSONParser parser = new JSONParser()
-        JSONArray competitionResults = (JSONArray) parser.parse(jsonResponse.result)
-        for (int i=0; i<competitionResults.size(); i++) {
-//        for (def competitionResult : jsonResponse?.result) {
-            JSONObject competitionResult = competitionResults.get(i);
+
+        def jsonSlurper = new JsonSlurper()
+        def competitionResults = jsonSlurper.parseText(jsonResponse.result)
+        for (def competitionResult : competitionResults) {
             try {
                 if (competitionResult.competition) {
                     log.debug "Competition region: " + competitionResult.competitionRegion
