@@ -45,34 +45,36 @@ class CompetitionsService {
 
 //        def jsonSlurper = new JsonSlurper()
 //        def competitionResults = jsonSlurper.parseText(jsonResponse.result)
-        for (def competitionResult : jsonResponse.result) {
-            log.debug "Attempting to process: " + competitionResult
-            try {
-                if (competitionResult.competition) {
-                    log.debug "Competition region: " + competitionResult.competitionRegion
-                    log.debug "Competition id: " + competitionResult.competition.id
-                    log.debug "Competition name: " + competitionResult.competition.name
+        for (def competitionResults : jsonResponse.result) {
+            for (def competitionResult : competitionResults) {
+                log.debug "Attempting to process: " + competitionResult
+                try {
+                    if (competitionResult.competition) {
+                        log.debug "Competition region: " + competitionResult.competitionRegion
+                        log.debug "Competition id: " + competitionResult.competition.id
+                        log.debug "Competition name: " + competitionResult.competition.name
 
-                    // attempt to find the country information for competition
-                    String country3LetterCode = competitionResult.competitionRegion
-                    CountryInformation countryInformation = CountryInformation.findByIso3LetterCode(country3LetterCode)
-                    Country country = Country.findByCountryCode(countryInformation?.iso2LetterCode)
+                        // attempt to find the country information for competition
+                        String country3LetterCode = competitionResult.competitionRegion
+                        CountryInformation countryInformation = CountryInformation.findByIso3LetterCode(country3LetterCode)
+                        Country country = Country.findByCountryCode(countryInformation?.iso2LetterCode)
 
-                    // create a new competition instance
-                    competition = new Competition(competitionId: competitionResult?.competition?.id, competitionName: competitionResult?.competition?.name, country: country)
+                        // create a new competition instance
+                        competition = new Competition(competitionId: competitionResult?.competition?.id, competitionName: competitionResult?.competition?.name, country: country)
 
-                    // attempt to persist the competition instance
-                    if (!competition.save()) {
-                        log.error "Failed to persist competition with id [" + competitionResult?.competition?.id + "] and name [" + competitionResult?.competition?.name + "]."
-                        competition?.errors?.each {
-                            log.error it
+                        // attempt to persist the competition instance
+                        if (!competition.save()) {
+                            log.error "Failed to persist competition with id [" + competitionResult?.competition?.id + "] and name [" + competitionResult?.competition?.name + "]."
+                            competition?.errors?.each {
+                                log.error it
+                            }
+                        } else {
+                            competitions.add(competition)
                         }
-                    } else {
-                        competitions.add(competition)
                     }
+                } catch (ex) {
+                    log.error "An unhandable exception occurred.", ex
                 }
-            } catch(ex) {
-                log.error "An unhandable exception occurred.", ex
             }
         }
 
