@@ -41,24 +41,24 @@ class CompetitionsService {
         def competitions = new ArrayList<Competition>(1)
 
         Competition competition
-        jsonResponse?.result?.each {
+        for (def competitionResult : jsonResponse?.result) {
             try {
-                if (it.competition) {
-                    log.debug "Competition region: " + it.competitionRegion
-                    log.debug "Competition id: " + it.competition.id
-                    log.debug "Competition name: " + it.competition.name
+                if (competitionResult.competition) {
+                    log.debug "Competition region: " + competitionResult.competitionRegion
+                    log.debug "Competition id: " + competitionResult.competition.id
+                    log.debug "Competition name: " + competitionResult.competition.name
 
                     // attempt to find the country information for competition
-                    String country3LetterCode = it.competitionRegion
+                    String country3LetterCode = competitionResult.competitionRegion
                     CountryInformation countryInformation = CountryInformation.findByIso3LetterCode(country3LetterCode)
                     Country country = Country.findByCountryCode(countryInformation?.iso2LetterCode)
 
                     // create a new competition instance
-                    competition = new Competition(competitionId: it?.competition?.id, competitionName: it?.competition?.name, country: country)
+                    competition = new Competition(competitionId: competitionResult?.competition?.id, competitionName: competitionResult?.competition?.name, country: country)
 
                     // attempt to persist the competition instance
                     if (!competition.save()) {
-                        log.error "Failed to persist competition with id [" + it?.competition?.id + "] and name [" + it?.competition?.name + "]."
+                        log.error "Failed to persist competition with id [" + competitionResult?.competition?.id + "] and name [" + competitionResult?.competition?.name + "]."
                         competition?.errors?.each {
                             log.error it
                         }
