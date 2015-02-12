@@ -95,7 +95,9 @@ class EventsService extends BaseService {
         def jsonResponse = betfairApiService.executeBetfairApiCall(rpcRequest)
 
         Event event
-        for (def eventInformation : jsonResponse.result) {
+        for (def record : jsonResponse.result) {
+            LazyMap eventInformation = (LazyMap) record.event
+
             String id = eventInformation.id
             event = Event.findById(id)
             if (!event) {
