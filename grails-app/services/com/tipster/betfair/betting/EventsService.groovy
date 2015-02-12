@@ -101,6 +101,7 @@ class EventsService extends BaseService {
             String id = eventInformation.id
             event = Event.findById(id)
             if (!event) {
+                log.debug "Event not found in database so I'm creating a new instance with id [" + eventInformation.id + "]."
                 event = new Event(id: id, competition: competition)
             }
 
