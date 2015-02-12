@@ -6,6 +6,8 @@ import com.tipster.betfair.Country
 import com.tipster.betfair.CountryInformation
 import com.tipster.betfair.MarketFilter
 import com.tipster.betfair.error.BetfairError
+import com.tipster.betfair.event.Competition
+import com.tipster.betfair.event.Event
 import com.tipster.betfair.exceptions.BetfairWrapperException
 import com.tipster.betfair.util.json.JsonConverter
 import com.tipster.betfair.utils.http.JsonRpcRequest
@@ -43,8 +45,6 @@ class EventsService extends BaseService {
         Country country
         CountryInformation countryInformation
 
-        if (jsonResponse instanceof LazyMap)
-            log.debug "We have a lazy map"
         for (def countryCode : jsonResponse.result) {
             iso2LetterCode = countryCode.countryCode
 
@@ -72,6 +72,13 @@ class EventsService extends BaseService {
                     log.error "An unknown exception occurred while trying to persist a new country instance by ISO-2-Letter code [" + iso2LetterCode + "].", ex
                 }
             }
+        }
+    }
+
+    def getEventsByCompetition(Competition competition) {
+        def criteria = Event.createCriteria()
+        def results = criteria.list {
+            eq ('competition', competition)
         }
     }
 }

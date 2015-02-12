@@ -124,4 +124,6 @@ databaseChangeLog = {
 	include file: 'add-market-type-entity.groovy'
 
 	include file: 'add-ci-on-country.groovy'
+
+	include file: 'connect-event-competition.groovy'
 }

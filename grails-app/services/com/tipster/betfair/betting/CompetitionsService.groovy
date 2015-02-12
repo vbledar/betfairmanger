@@ -81,4 +81,11 @@ class CompetitionsService {
 
         return competitions
     }
+
+    def retrieveCompetitionsByCountry(Country country) {
+        def criteria = Competition.createCriteria()
+        def results = criteria.list {
+            eq ('country', country)
+        }
+    }
 }

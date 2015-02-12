@@ -3,7 +3,7 @@ import com.tipster.betfair.CountryInformation
 class BootStrap {
 
     def init = { servletContext ->
-        importCountryInformation()
+//        importCountryInformation()
     }
     def destroy = {
     }
@@ -11,13 +11,13 @@ class BootStrap {
     def importCountryInformation() {
 
         // load all country information records so that they get cached in the system
-        CountryInformation.findAll()
+        CountryInformation.list()
 
 
         // process countries file if one exists
         BufferedReader bufferedReader
         try {
-            File countriesFile = new File("/Users/vbledar/countries.csv")
+            File countriesFile = new File("/Users/vbledar/countriesss.csv")
             if (countriesFile.exists()) {
                 bufferedReader = new BufferedReader(new FileReader(countriesFile))
             } else {

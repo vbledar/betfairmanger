@@ -16,6 +16,8 @@ class Event {
 
     Date openDate
 
+    static belongsTo = [competition: Competition]
+
     static hasMany = [markets: Market]
 
     static constraints = {
@@ -27,6 +29,8 @@ class Event {
         timezone nullable: true
 
         openDate nullable: false
+
+        competition nullable: false
 
         markets nullable: true
     }

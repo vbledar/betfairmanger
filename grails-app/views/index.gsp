@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="layout" content="main"/>
-		<title>
-            <g:message code="application.title"/>
-		</title>
+<head>
+    <meta name="layout" content="main"/>
+    <title>
+        <g:message code="application.title"/>
+    </title>
 
-	</head>
-	<body>
+</head>
 
+<body>
 
-    <div class="col-xs-12 col-sm-3 col-md-2">
-        <g:render template="/mainFilters"/>
+<g:render template="/mainFilters" model="[countries: countries]"/>
+
+<br />
+
+<div class="clearfix"></div>
+
+<div id="mainInformationPanel">
+    <div class="alert alert-info">
+        <g:message code="user.message.please.select.country"/>
     </div>
+</div>
 
-    <div class="col-xs-12 col-sm-9 col-md-10">
-
-    </div>
-	</body>
+</body>
 </html>
