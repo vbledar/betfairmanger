@@ -4,8 +4,5 @@
     </div>
 </g:if>
 <g:else>
-
-    <g:each in="${eventsList}" var="eventInformation">
-        ${eventInformation?.id} ${eventInformation?.name}
-    </g:each>
+    <g:render template="/eventsList" model="[eventsList: eventsList]"/>
 </g:else>
