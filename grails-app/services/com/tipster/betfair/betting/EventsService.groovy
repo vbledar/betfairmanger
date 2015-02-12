@@ -107,7 +107,7 @@ class EventsService extends BaseService {
             event.name = eventInformation.name
             event.country = competition.country
             event.timezone = eventInformation.timezome
-            event.openDate = JsonConverter.convertFromJson(eventInformation.openDate, Date.class)
+            event.openDate = javax.xml.bind.DatatypeConverter.parseDateTime(eventInformation.openDate).getTime()
 
             try {
                 if (!event.save()) {
