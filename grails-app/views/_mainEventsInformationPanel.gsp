@@ -7,7 +7,7 @@
 
         <div class="btn-group btn-group-sm" role="group">
             <g:link elementId="retrieveEventsFromBetfair" controller="events"
-                    action="retrieveBetfairEvents" competition-id="${competition?.competitionId}"
+                    action="synchronizeEventsFromBetfair" competition-id="${competition?.competitionId}"
                     class="btn btn-info">
                 <span class="glyphicon glyphicon-download"></span> <g:message
                     code="events.management.button.retrieve.events.betfair"/>
