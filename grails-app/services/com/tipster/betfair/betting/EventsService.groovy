@@ -75,6 +75,51 @@ class EventsService extends BaseService {
         }
     }
 
+    def synchronizeEventsFromBetfair(Competition competition) {
+        String api = grailsApplication.config.betfair.api.betting.bettingApi
+        String apiVersion = grailsApplication.config.betfair.api.betting.bettingApiVersion
+        String action = grailsApplication.config.betfair.api.betting.actionListEvents
+
+        MarketFilter marketFilter = new MarketFilter()
+        marketFilter.addExchangeId("1")
+        marketFilter.addCompetitionId(competition.competitionId)
+        Map<String, Object> params = new HashMap<>()
+        params.put("filter", marketFilter)
+
+        JsonRpcRequest rpcRequest = new JsonRpcRequest()
+        rpcRequest.id = BetfairApiService.BETFAIR_API_ID
+        rpcRequest.jsonrpc = BetfairApiService.BETFAIR_JSON_RPC_VERSION
+        rpcRequest.method = api + apiVersion + action
+        rpcRequest.params = params
+
+        def jsonResponse = betfairApiService.executeBetfairApiCall(rpcRequest)
+
+        Event event
+        for (def eventInformation : jsonResponse.result) {
+            String id = eventInformation.id
+            event = Event.findById(id)
+            if (!event) {
+                event = new Event(id: id, competition: competition)
+            }
+
+            event.name = eventInformation.name
+            event.country = competition.country
+            event.timezone = eventInformation.timezome
+            event.openDate = JsonConverter.convertFromJson(eventInformation.openDate, Date.class)
+
+            try {
+                if (!event.save()) {
+                    log.error "Failed to persist event by id [" + eventInformation.id + "] and name [" + eventInformation.name + "]."
+                    event.errors.each {
+                        log.error it
+                    }
+                }
+            } catch(ex) {
+                log.error "An unknown exception occured while trying to perist a new event instance by id [" + eventInformation.id + "] and name [" + eventInformation.name + "]."
+            }
+        }
+    }
+
     def getEventsByCompetition(Competition competition) {
         def criteria = Event.createCriteria()
         def results = criteria.list {

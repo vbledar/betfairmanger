@@ -95,6 +95,13 @@ public class MarketFilter {
         this.competitionIds = competitionIds;
     }
 
+    public void addCompetitionId(String competitionId) {
+        if (this.competitionIds == null) {
+            this.competitionIds = new HashSet<String>();
+        }
+        this.competitionIds.add(competitionId);
+    }
+
     public Set<String> getVenues() {
         return venues;
     }

@@ -43,8 +43,8 @@ class LandingController {
         }
 
         try {
-            def events = eventsService.getEventsByCompetition(competition)
-            render template: '/mainEventsInformationPanel', model: [events: events]
+            def eventsList = eventsService.getEventsByCompetition(competition)
+            render template: '/mainEventsInformationPanel', model: [eventsList: eventsList, competition: competition]
         } catch (ex) {
             render (contentType: 'application/json') {
                 ['success': false, 'message': ex.message]

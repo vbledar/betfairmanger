@@ -110,6 +110,7 @@ environments {
                     actionListCountries = "listCountries"
                     actionListCompetitions = "listCompetitions"
                     actionListMarketTypes = "listMarketTypes"
+                    actionListEvents = "listEvents"
                 }
                 accounts {
                     accountsEndpoint = "https://developer.betfair.com/api.betfair.com/exchange/account/json-rpc/v1"
