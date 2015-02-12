@@ -111,7 +111,7 @@ class EventsService extends BaseService {
 
             try {
                 if (!event.save()) {
-                    log.error "Failed to persist event by id [" + eventInformation.id + "] and name [" + eventInformation.name + "]."
+                    log.error "Failed to persist event by id [" + event.id + "] and name [" + event.name + "]."
                     event.errors.each {
                         log.error it
                     }
