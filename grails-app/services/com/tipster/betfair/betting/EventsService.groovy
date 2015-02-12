@@ -98,11 +98,10 @@ class EventsService extends BaseService {
         for (def record : jsonResponse.result) {
             LazyMap eventInformation = (LazyMap) record.event
 
-            String id = eventInformation.id
-            event = Event.findById(id)
+            event = Event.findById(eventInformation.id)
             if (!event) {
                 log.debug "Event not found in database so I'm creating a new instance with id [" + eventInformation.id + "]."
-                event = new Event(id: id, competition: competition)
+                event = new Event(id: eventInformation.id, competition: competition)
             }
 
             event.name = eventInformation.name
