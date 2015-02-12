@@ -32,7 +32,7 @@ class BetfairApiService extends BaseService {
             response.success = { response, json ->
                 log.info "Request was successful for method: [" + rpcRequest.method + "]."
                 if (json[0].result) {
-                    return json
+                    return json[0]
                 }
 
                 if (json[0].error instanceof LazyMap) {

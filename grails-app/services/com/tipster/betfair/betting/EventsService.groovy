@@ -10,6 +10,7 @@ import com.tipster.betfair.exceptions.BetfairWrapperException
 import com.tipster.betfair.util.json.JsonConverter
 import com.tipster.betfair.utils.http.JsonRpcRequest
 import grails.transaction.Transactional
+import groovy.json.internal.LazyMap
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
@@ -41,6 +42,9 @@ class EventsService extends BaseService {
         String iso2LetterCode
         Country country
         CountryInformation countryInformation
+
+        if (jsonResponse instanceof LazyMap)
+            log.debug "We have a lazy map"
         for (def countryCode : jsonResponse.result) {
             iso2LetterCode = countryCode.countryCode
 
