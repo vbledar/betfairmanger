@@ -16,16 +16,24 @@ class CountryInformation {
     String iso2LetterCode
     String iso3LetterCode
 
+    static hasOne = [country: Country]
+
     static constraints = {
         name nullable: false
         formalName nullable: true
+
         capital nullable: true
+
         currency nullable: true
         currencyName nullable: true
+
         telephoneCode nullable: true
+
         iso1NumberCode nullable: true
         iso2LetterCode nullable: true
         iso3LetterCode nullable: true
+
+        country nullable: true
     }
 
     static mapping = {

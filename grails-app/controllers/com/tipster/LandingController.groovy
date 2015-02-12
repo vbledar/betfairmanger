@@ -1,4 +1,4 @@
-package com.tipster.betfair
+package com.tipster
 
 class LandingController {
 

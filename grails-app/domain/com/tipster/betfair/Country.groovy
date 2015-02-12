@@ -4,15 +4,18 @@ class Country {
 
     String countryCode
 
+    static belongsTo = [countryInformation: CountryInformation]
+
     static mapping = {
         id name: 'countryCode', generator: 'assigned'
     }
 
     static constraints = {
+        countryCode nullable: false
+        countryInformation nullable: true
     }
 
     String getCountryName() {
-        CountryInformation countryInformation = CountryInformation.findByIso2LetterCode(this.countryCode)
-        if (countryInformation) return countryInformation?.name
+        return countryInformation?.name
     }
 }

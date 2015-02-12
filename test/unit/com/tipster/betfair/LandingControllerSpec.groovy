@@ -1,5 +1,6 @@
 package com.tipster.betfair
 
+import com.tipster.LandingController
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 

@@ -5,6 +5,7 @@ import com.tipster.betfair.exceptions.BetfairWrapperException
 import com.tipster.betfair.util.json.JsonConverter
 import com.tipster.betfair.utils.http.JsonRpcRequest
 import grails.transaction.Transactional
+import groovy.json.internal.LazyMap
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
@@ -30,15 +31,16 @@ class BetfairApiService extends BaseService {
 
             response.success = { response, json ->
                 log.info "Request was successful for method: [" + rpcRequest.method + "]."
-                log.debug json
-                if (json.result) {
+                if (json[0].result) {
                     return json
                 }
 
-                log.info "Betfair response has errors."
-                log.debug json.error
-                BetfairError betfairError = this.processError(json)
-                throw new BetfairWrapperException(betfairError: betfairError)
+                if (json[0].error instanceof LazyMap) {
+                    BetfairError betfairError = this.processError((LazyMap) json[0].error)
+                    throw new BetfairWrapperException(betfairError: betfairError)
+                } else {
+                    log.error "Something is very wrong here. This occassion should never happen."
+                }
             }
 
             response.failure = {response ->

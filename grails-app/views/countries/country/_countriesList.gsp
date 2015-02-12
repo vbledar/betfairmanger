@@ -5,6 +5,9 @@
             <g:message code="form.field.country.code"/>
         </th>
         <th>
+            <g:message code="form.field.country.iso.three.letter"/>
+        </th>
+        <th>
             <g:message code="form.field.country.name"/>
         </th>
         <g:if test="${showActions}">
@@ -20,18 +23,22 @@
                     ${country?.countryCode}
                 </td>
                 <td>
+                    ${country?.countryInformation?.iso3LetterCode}
+                </td>
+                <td>
                     ${country?.getCountryName()}
                 </td>
-                <g:if test="${showActions}">
-                    <th>
-                        <div class="btn-group">
-                            <g:link controller="countries" action="deleteCountry" id="${country?.countryCode}"
-                                    class="btn btn-danger">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </g:link>
-                        </div>
-                    </th>
-                </g:if>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <g:link controller="competitions" action="manageCompetitions" id="${country?.countryCode}" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                        </g:link>
+                        <g:link controller="countries" action="deleteCountry" id="${country?.countryCode}"
+                                class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </g:link>
+                    </div>
+                </td>
             </tr>
         </g:each>
     </table>

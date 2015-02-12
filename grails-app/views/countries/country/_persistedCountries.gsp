@@ -1,9 +1,3 @@
-<div class="page-header">
-    <h5>
-        <g:message code="countries.management.persisted.countries"/>
-    </h5>
-</div>
-
 <div class="row">
     <div class="col-sm-12">
         <div id="persistedCountriesContainer">
