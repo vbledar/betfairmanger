@@ -180,6 +180,7 @@ class EventsService extends BaseService {
                 market = new Market()
                 market.marketId = marketInformation.marketId
                 market.marketName = marketInformation.marketName
+                market.marketType = marketType
                 market.event = event
 
                 for (def runnerRecord : marketInformation.runners) {
