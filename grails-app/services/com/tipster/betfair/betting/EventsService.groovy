@@ -240,13 +240,11 @@ class EventsService extends BaseService {
                     log.debug "Runner odds are: " + runnerInformation.get("ex")
 
                     for (Runner runner : market.runners) {
-                        log.debug "Runner id to check is : " + runner?.selectionid
-                        log.debug "Runner id to check against is: " + runnerInformation.get("selectionId")
-
                         String runnerId = runner?.selectionid
                         String runnerIdToCheck = runnerInformation.get("selectionId")
                         if (runnerId && runnerIdToCheck && runnerId.equalsIgnoreCase(runnerIdToCheck)) {
-                            log.debug "Runner found in market."
+                            LazyMap runnerOdds = runnerInformation.get("ex")
+                            log.debug "Runner odd is: " + ((LazyMap) runnerOdds?.get("availablaToBack")[0])?.get("price")
                             break
                         }
                     }
