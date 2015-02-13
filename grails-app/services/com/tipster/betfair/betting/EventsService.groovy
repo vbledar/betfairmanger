@@ -244,7 +244,7 @@ class EventsService extends BaseService {
                         String runnerIdToCheck = runnerInformation.get("selectionId")
                         if (runnerId && runnerIdToCheck && runnerId.equalsIgnoreCase(runnerIdToCheck)) {
                             LazyMap runnerOdds = runnerInformation.get("ex")
-                            log.debug "Runner odd is: " + ((LazyMap) runnerOdds?.get("availablaToBack")[0])?.get("price")
+                            log.debug "Runner odd is: " + ((LazyMap) runnerOdds?.get("availableToBack")[0])?.get("price")
                             break
                         }
                     }
