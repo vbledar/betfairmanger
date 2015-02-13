@@ -220,7 +220,7 @@ class EventsService extends BaseService {
         priceProjection.addPriceData(PriceData.EX_BEST_OFFERS)
 
         Map<String, Object> params = new HashMap<>()
-        params.put("filter", marketFilter)
+        params.put("marketIds", marketFilter.getMarketIds())
         params.put("priceProjection", priceProjection)
 
         JsonRpcRequest rpcRequest = new JsonRpcRequest()
