@@ -236,15 +236,20 @@ class EventsService extends BaseService {
             if (marketInformation.containsKey("runners")) {
                 for (def runnerRecord : marketInformation.get("runners")) {
                     LazyMap runnerInformation = (LazyMap) runnerRecord
-                    log.debug "Runner id is: " + runnerInformation.get("selectionId")
-                    log.debug "Runner odds are: " + runnerInformation.get("ex")
-
                     for (Runner runner : market.runners) {
                         String runnerId = runner?.selectionid
                         String runnerIdToCheck = runnerInformation.get("selectionId")
                         if (runnerId && runnerIdToCheck && runnerId.equalsIgnoreCase(runnerIdToCheck)) {
                             LazyMap runnerOdds = runnerInformation.get("ex")
-                            log.debug "Runner odd is: " + ((LazyMap) runnerOdds?.get("availableToBack")[0])?.get("price")
+                            runner.runnerOdd = Double.parseDouble ((LazyMap) runnerOdds?.get("availableToBack")[0])?.get("price")
+
+                            if (!runner.save()) {
+                                log.error "Failed to persist runner [" + runner?.selectionid + "] with updated odds."
+                                runner.errors.each {
+                                    log.error it
+                                }
+                            }
+
                             break
                         }
                     }

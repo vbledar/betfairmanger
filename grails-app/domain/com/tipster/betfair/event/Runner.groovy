@@ -8,6 +8,9 @@ class Runner {
 
     Integer sortPriority
 
+    Double runnerOdd
+
     static constraints = {
+
     }
 }
