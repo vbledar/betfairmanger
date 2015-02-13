@@ -87,6 +87,13 @@ public class MarketFilter {
         this.eventIds = eventIds;
     }
 
+    public void addEventId(String eventId) {
+        if (this.eventIds == null) {
+            this.eventIds = new HashSet<String>();
+        }
+        this.eventIds.add(eventId);
+    }
+
     public Set<String> getCompetitionIds() {
         return competitionIds;
     }
@@ -155,6 +162,13 @@ public class MarketFilter {
 
     public void setMarketTypeCodes(Set<String> marketTypeCodes) {
         this.marketTypeCodes = marketTypeCodes;
+    }
+
+    public void addMarketTypeCode(String marketTypeCode) {
+        if (this.marketTypeCodes == null) {
+            this.marketTypeCodes = new HashSet<String>();
+        }
+        this.marketTypeCodes.add(marketTypeCode);
     }
 
     public TimeRange getMarketStartTime() {

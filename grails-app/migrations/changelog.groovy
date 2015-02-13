@@ -126,4 +126,6 @@ databaseChangeLog = {
 	include file: 'add-ci-on-country.groovy'
 
 	include file: 'connect-event-competition.groovy'
+
+	include file: 'added-markets-runners.groovy'
 }

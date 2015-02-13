@@ -1,34 +1,34 @@
-<div class="col-xs-12 col-sm-8 col-md-9">
+%{--<div class="col-xs-12 col-sm-8 col-md-9">--}%
 
     <div class="page-header">
         <h4>
-            <g:message code="events.management.title"/>
+            <g:message code="markets.management.title"/>
         </h4>
 
         <div class="btn-group btn-group-sm" role="group">
-            <g:link elementId="retrieveEventsFromBetfair" controller="events"
-                    action="synchronizeEventsFromBetfair" competition-id="${competition?.competitionId}"
+            <g:link elementId="synchronizeMarketsFromBetfair" controller="events"
+                    action="synchronizeMarketsFromBetfair" event-id="${event?.id}"
                     class="btn btn-info">
                 <span class="glyphicon glyphicon-download"></span> <g:message
-                    code="events.management.button.retrieve.events.betfair"/>
+                    code="markets.management.button.retrieve.markets.betfair"/>
             </g:link>
         </div>
     </div>
 
-    <div id="persistedEvents">
-        <g:render template="/persistedEvents" model="[eventsList: eventsList]"/>
+    <div id="persistedMarkets">
+        <g:render template="persistedMarkets" model="[markets: markets]"/>
     </div>
-</div>
+%{--</div>--}%
 
 <script type="application/javascript">
 
     $(function () {
-        $('#retrieveEventsFromBetfair').off('click').on('click', function (event) {
+        $('#synchronizeMarketsFromBetfair').off('click').on('click', function (event) {
             event.preventDefault();
 
-            var competitionId = $(this).attr('competition-id');
+            var eventId = $(this).attr('event-id');
             var parameters = {};
-            parameters.competitionId = competitionId;
+            parameters.eventId = eventId;
 
             var url = $(this).attr('href')
             $.post(url, parameters, function (data) {
@@ -44,8 +44,8 @@
 
                 console.log("POST server response successful");
                 console.log(data);
-                showSuccessMessage("Events were synchronized successfully from BetFair.")
-                $('#persistedEvents').html(data);
+                showSuccessMessage("Markets were synchronized successfully from BetFair.")
+                $('#persistedMarkets').html(data);
             }).fail(function (data) {
                 console.log("POST failed.");
                 console.log(data);

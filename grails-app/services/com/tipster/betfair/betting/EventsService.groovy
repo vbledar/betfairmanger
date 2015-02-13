@@ -5,9 +5,13 @@ import com.tipster.betfair.BetfairApiService
 import com.tipster.betfair.Country
 import com.tipster.betfair.CountryInformation
 import com.tipster.betfair.MarketFilter
+import com.tipster.betfair.enums.MarketProjection
 import com.tipster.betfair.error.BetfairError
 import com.tipster.betfair.event.Competition
 import com.tipster.betfair.event.Event
+import com.tipster.betfair.event.Market
+import com.tipster.betfair.event.MarketType
+import com.tipster.betfair.event.Runner
 import com.tipster.betfair.exceptions.BetfairWrapperException
 import com.tipster.betfair.util.json.JsonConverter
 import com.tipster.betfair.utils.http.JsonRpcRequest
@@ -124,10 +128,94 @@ class EventsService extends BaseService {
         }
     }
 
+    def synchronizeEventMarketsFromBetfair(Event event, Set<MarketType> marketTypes) {
+        Boolean hasSuccess = Boolean.FALSE
+        Boolean hasException = Boolean.FALSE
+        for (MarketType marketType : marketTypes) {
+            try {
+                synchronizeEventMarketFromBetfair(event, marketType)
+                hasSuccess = Boolean.TRUE
+            } catch(ex) {
+                log.error "Exception caught while attempting to synchronize event markets from betfair.", ex
+                hasException = Boolean.TRUE
+            }
+        }
+    }
+
+    def synchronizeEventMarketFromBetfair(Event event, MarketType marketType) {
+        String api = grailsApplication.config.betfair.api.betting.bettingApi
+        String apiVersion = grailsApplication.config.betfair.api.betting.bettingApiVersion
+        String action = grailsApplication.config.betfair.api.betting.actionListMarketCatalogue
+
+        MarketFilter marketFilter = new MarketFilter()
+        marketFilter.addExchangeId("1")
+        marketFilter.addCompetitionId(event.competition.competitionId)
+        marketFilter.addMarketCountry(event.country.countryCode)
+        marketFilter.addEventId(event.id)
+        marketFilter.addMarketTypeCode(marketType.name)
+
+        Set<MarketProjection> marketProjections = new HashSet<>()
+        marketProjections.add(MarketProjection.RUNNER_DESCRIPTION)
+
+        Map<String, Object> params = new HashMap<>()
+        params.put("filter", marketFilter)
+        params.put("marketProjection", marketProjections)
+        params.put("maxResults", 1)
+
+        JsonRpcRequest rpcRequest = new JsonRpcRequest()
+        rpcRequest.id = BetfairApiService.BETFAIR_API_ID
+        rpcRequest.jsonrpc = BetfairApiService.BETFAIR_JSON_RPC_VERSION
+        rpcRequest.method = api + apiVersion + action
+        rpcRequest.params = params
+
+        def jsonResponse = betfairApiService.executeBetfairApiCall(rpcRequest)
+
+        Market market
+        Runner runner
+        for (def record : jsonResponse.result) {
+            LazyMap marketInformation = (LazyMap) record
+
+            market = Market.findById(marketInformation.marketId)
+            if (!market) {
+                market = new Market()
+                market.marketId = marketInformation.marketId
+                market.marketName = marketInformation.marketName
+                market.event = event
+
+                for (def runnerRecord : marketInformation.runners) {
+                    LazyMap runnerInformation = (LazyMap) runnerRecord
+                    runner = new Runner()
+                    runner.selectionid = runnerInformation.selectionId
+                    runner.runnerName = runnerInformation.runnerName
+                    runner.sortPriority = runnerInformation.sortPriority
+                    market.addToRunners(runner)
+                }
+            }
+
+            try {
+                if (!market.save()) {
+                    log.error "Failed to persist market by id [" + market.marketId + "] and name [" + market.marketName + "]."
+                    market.errors.each {
+                        log.error it
+                    }
+                }
+            } catch(ex) {
+                log.error "An unknown exception occured while trying to persist a new market instance by id [" + marketInformation.marketId + "] and name [" + marketInformation.marketName + "]."
+            }
+        }
+    }
+
     def getEventsByCompetition(Competition competition) {
         def criteria = Event.createCriteria()
         def results = criteria.list {
             eq ('competition', competition)
+        }
+    }
+
+    def getMarketsByEvent(Event event) {
+        def criteria = Market.createCriteria()
+        def results = criteria.list {
+            eq ('event', event)
         }
     }
 }

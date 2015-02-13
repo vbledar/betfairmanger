@@ -1,0 +1,116 @@
+<div class="panel panel-default table-responsive">
+    <table class="table table-cell-horizontal-center table-cell-vertical-middle">
+
+        <tr>
+            <th>
+                <g:message code="form.field.event.id"/>
+            </th>
+            <th>
+                <g:message code="form.field.event.name"/>
+            </th>
+            <th>
+                <g:message code="form.field.country.name"/>
+            </th>
+            <th>
+                <g:message code="form.field.competition.name"/>
+            </th>
+            <th>
+                <g:message code="form.field.event.timezone"/>
+            </th>
+            <th>
+                <g:message code="form.field.event.open.date"/>
+            </th>
+        </tr>
+
+        <g:each in="${eventsList.sort {it.openDate}}" var="eventInformation">
+            <tr id="eventRow${eventInformation?.id}" class="selectable-row" event-id="${eventInformation?.id}">
+                <td>
+                    ${eventInformation?.id}
+                </td>
+                <td>
+                    ${eventInformation?.name}
+                </td>
+                <td>
+                    ${eventInformation?.country?.getCountryName()}
+                </td>
+                <td>
+                    ${eventInformation?.competition?.competitionName}
+                </td>
+                <td>
+                    ${eventInformation?.timezone}
+                </td>
+                <td>
+                    <g:formatDate date="${eventInformation?.openDate}" format="dd/MM/yyyy HH:mm:ss z"/>
+                </td>
+            </tr>
+        </g:each>
+    </table>
+</div>
+
+<g:javascript>
+
+    var competitionSelected = false;
+    $(function () {
+
+        $('.selectable-row').off('click').on('click', function (event) {
+            event.preventDefault();
+
+            var selectedRowId = $(this).attr('id');
+            var eventId = $(this).attr('event-id');
+            if (competitionSelected === false) {
+                competitionSelected = true;
+
+                $('.selectable-row').removeClass("info");
+                $('.selectable-row').fadeToggle("slow", "linear");
+                $('#' + selectedRowId).fadeToggle();
+                $('#' + selectedRowId).addClass("info");
+
+                $('#marketsContainer').fadeOut();
+                $('#marketsContainer').html("");
+
+                loadEventMarkets(eventId);
+            } else {
+                competitionSelected = false;
+                $('.selectable-row').removeClass("info");
+                $('.selectable-row').each(function () {
+                    var currentRowId = $(this).attr('id')
+                    if (currentRowId != selectedRowId) {
+                        $(this).fadeToggle();
+                    }
+                });
+                $('#marketsContainer').fadeOut();
+                $('#marketsContainer').html("");
+            }
+
+        });
+    });
+
+    function loadEventMarkets(eventId) {
+        var parameters = {};
+        parameters.eventId = eventId;
+
+        var url = "${createLink(controller: 'events', action: 'manageEventMarkets')}";
+        $.post(url, parameters, function (data) {
+            console.log("POST executed");
+        }).done(function (data) {
+            console.log("POST success");
+            if (data.success === false) {
+                console.log("POST failed");
+                console.log("Server message is: " + data.message)
+                showErrorMessage(data.message);
+                return;
+            }
+
+            console.log("POST server response successful");
+            console.log(data);
+            showSuccessMessage("Action completed successfully.");
+            $('#marketsContainer').html(data);
+            $('#marketsContainer').fadeIn();
+        }).fail(function (data) {
+            console.log("POST failed.");
+            console.log(data);
+            showErrorMessage(data);
+        });
+    }
+
+</g:javascript>

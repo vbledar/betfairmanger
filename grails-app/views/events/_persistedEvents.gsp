@@ -4,5 +4,9 @@
     </div>
 </g:if>
 <g:else>
-    <g:render template="/eventsList" model="[eventsList: eventsList]"/>
+    <g:render template="/events/eventsList" model="[eventsList: eventsList]"/>
+
+    <div id="marketsContainer">
+
+    </div>
 </g:else>

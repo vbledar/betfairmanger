@@ -4,8 +4,11 @@ class MarketType {
 
     String name
 
+    transient Boolean active
+
     static constraints = {
         name nullable: false
+        active nullable: true
     }
 
     static mapping = {
