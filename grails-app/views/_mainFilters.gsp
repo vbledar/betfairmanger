@@ -1,6 +1,6 @@
 <%@ page import="com.tipster.betfair.Country" %>
 <div class="panel-body bg-info" style="margin-bottom: 0px !important;">
-    <h4 class="pull-right">
+    <h4>
         <g:message code="main.filters.header"/>
     </h4>
 

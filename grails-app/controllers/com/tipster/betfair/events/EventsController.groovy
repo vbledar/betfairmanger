@@ -56,6 +56,14 @@ class EventsController {
             eventsService.synchronizeEventMarketsFromBetfair(event, marketTypes)
 
             def markets = eventsService.getMarketsByEvent(event)
+
+            for (def market : markets) {
+                try {
+                    eventsService.synchronizeEventMarketOddsFromBetfair(market)
+                } catch(ex) {
+                    log.error "Failed to retrieve odds for market with id [" + market?.marketId + "]."
+                }
+            }
             render template: 'persistedMarkets', model: [markets: markets]
         } catch (ex) {
             log.error "Failed to synchronize markets from BetFair.", ex

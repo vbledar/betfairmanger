@@ -5,7 +5,9 @@ import com.tipster.betfair.BetfairApiService
 import com.tipster.betfair.Country
 import com.tipster.betfair.CountryInformation
 import com.tipster.betfair.MarketFilter
+import com.tipster.betfair.PriceProjection
 import com.tipster.betfair.enums.MarketProjection
+import com.tipster.betfair.enums.PriceData
 import com.tipster.betfair.error.BetfairError
 import com.tipster.betfair.event.Competition
 import com.tipster.betfair.event.Event
@@ -202,6 +204,47 @@ class EventsService extends BaseService {
                 }
             } catch(ex) {
                 log.error "An unknown exception occured while trying to persist a new market instance by id [" + marketInformation.marketId + "] and name [" + marketInformation.marketName + "]."
+            }
+        }
+    }
+
+    def synchronizeEventMarketOddsFromBetfair(Market market) {
+        String api = grailsApplication.config.betfair.api.betting.bettingApi
+        String apiVersion = grailsApplication.config.betfair.api.betting.bettingApiVersion
+        String action = grailsApplication.config.betfair.api.betting.actionListMarketBook
+
+        MarketFilter marketFilter = new MarketFilter()
+        marketFilter.addMarketId(market.marketId)
+
+        PriceProjection priceProjection = new PriceProjection()
+        priceProjection.addPriceData(PriceData.EX_BEST_OFFERS)
+
+        Map<String, Object> params = new HashMap<>()
+        params.put("filter", marketFilter)
+        params.put("priceProjection", priceProjection)
+
+        JsonRpcRequest rpcRequest = new JsonRpcRequest()
+        rpcRequest.id = BetfairApiService.BETFAIR_API_ID
+        rpcRequest.jsonrpc = BetfairApiService.BETFAIR_JSON_RPC_VERSION
+        rpcRequest.method = api + apiVersion + action
+        rpcRequest.params = params
+
+        def jsonResponse = betfairApiService.executeBetfairApiCall(rpcRequest)
+
+        for (def record : jsonResponse.result) {
+            LazyMap marketInformation = (LazyMap) record
+            if (marketInformation.containsKey("runners")) {
+                for (def runnerRecord : marketInformation.get("runners")) {
+                    LazyMap runnerInformation = (LazyMap) runnerRecord
+                    log.debug "Runner id is: " + runnerInformation.get("selectionId")
+                    log.debug "Runner odds are: " + runnerInformation.get("ex")
+
+                    for (Runner runner : market.runners) {
+                        if (runner?.selectionid?.equals(runnerInformation.get("selectionId"))) {
+                            log.debug "Runner found in market."
+                        }
+                    }
+                }
             }
         }
     }

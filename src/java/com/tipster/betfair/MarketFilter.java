@@ -71,6 +71,13 @@ public class MarketFilter {
         this.marketIds = marketIds;
     }
 
+    public void addMarketId(String marketId) {
+        if (this.marketIds == null) {
+            this.marketIds = new HashSet<String>();
+        }
+        this.marketIds.add(marketId);
+    }
+
     public Boolean getInPlayOnly() {
         return inPlayOnly;
     }
