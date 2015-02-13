@@ -21,7 +21,7 @@
                     ${runner?.runnerName}
                 </td>
                 <td>
-                    ${1.6}
+                    ${runner?.runnerOdd}
                 </td>
             </tr>
         </g:each>

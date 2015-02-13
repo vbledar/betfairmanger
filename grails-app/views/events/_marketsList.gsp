@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-xs-6 col-sm-6 col-md-6">
+    <div class="col-xs-12 col-sm-6 col-md-6">
         <div class="panel panel-default table-responsive">
             <table id="marketsTable" class="table table-cell-horizontal-center table-cell-vertical-middle">
 
@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <div id="runnersInformationPanel" class="col-xs-6 col-sm-6 col-md-6">
+    <div id="runnersInformationPanel" class="col-xs-12 col-sm-6 col-md-6">
 
         <div class="alert alert-warning">
             <g:message code="user.message.please.select.market"/>

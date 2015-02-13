@@ -11,6 +11,10 @@ class Runner {
     Double runnerOdd
 
     static constraints = {
+        selectionid nullable: false
+        runnerName nullable: false
+        sortPriority nullable: false
 
+        runnerOdd nullable: true
     }
 }

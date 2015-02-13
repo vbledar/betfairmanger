@@ -3,7 +3,7 @@ databaseChangeLog = {
     changeSet(author: "vbledar (generated)", id: "1423835979779-1") {
         addColumn(tableName: "runner") {
             column(name: "runner_odd", type: "double precision") {
-                constraints(nullable: "false")
+                constraints(nullable: "true")
             }
         }
     }
