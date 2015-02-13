@@ -240,6 +240,8 @@ class EventsService extends BaseService {
                     log.debug "Runner odds are: " + runnerInformation.get("ex")
 
                     for (Runner runner : market.runners) {
+                        log.debug "Runner id to check is :" + runner?.selectionid
+                        log.debug "Runner id to check against is: " + runnerInformation.get("selectionId")
                         if (runner?.selectionid?.equals(runnerInformation.get("selectionId"))) {
                             log.debug "Runner found in market."
                         }
