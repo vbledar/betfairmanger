@@ -127,5 +127,6 @@ databaseChangeLog = {
 
 	include file: 'connect-event-competition.groovy'
 
+
 	include file: 'added-markets-runners.groovy'
 }
