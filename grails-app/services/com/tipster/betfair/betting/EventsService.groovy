@@ -241,13 +241,17 @@ class EventsService extends BaseService {
                         String runnerIdToCheck = runnerInformation.get("selectionId")
                         if (runnerId && runnerIdToCheck && runnerId.equalsIgnoreCase(runnerIdToCheck)) {
                             LazyMap runnerOdds = runnerInformation.get("ex")
-                            runner.runnerOdd = Double.parseDouble ((LazyMap) runnerOdds?.get("availableToBack")[0])?.get("price")
+                            try {
+                                runner.runnerOdd = Double.parseDouble((LazyMap) runnerOdds?.get("availableToBack")[0])?.get("price")
 
-                            if (!runner.save()) {
-                                log.error "Failed to persist runner [" + runner?.selectionid + "] with updated odds."
-                                runner.errors.each {
-                                    log.error it
+                                if (!runner.save()) {
+                                    log.error "Failed to persist runner [" + runner?.selectionid + "] with updated odds."
+                                    runner.errors.each {
+                                        log.error it
+                                    }
                                 }
+                            } catch(ex) {
+                                log.error "An unknown error has occured while updating runner odds.", ex
                             }
 
                             break
