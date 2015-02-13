@@ -242,7 +242,9 @@ class EventsService extends BaseService {
                         if (runnerId && runnerIdToCheck && runnerId.equalsIgnoreCase(runnerIdToCheck)) {
                             LazyMap runnerOdds = runnerInformation.get("ex")
                             try {
-                                runner.runnerOdd = Double.parseDouble((LazyMap) runnerOdds?.get("availableToBack")[0])?.get("price")
+                                String runnerOdd = ((LazyMap) runnerOdds?.get("availableToBack")[0])?.get("price")
+                                log.debug "Runner odd is: " + runnerOdd
+                                runner.runnerOdd = Double.parseDouble runnerOdd
 
                                 if (!runner.save()) {
                                     log.error "Failed to persist runner [" + runner?.selectionid + "] with updated odds."
