@@ -1,5 +1,5 @@
 <g:if test="${!eventsList || eventsList.size() == 0}">
-    <div class="alert alert-info">
+    <div class="alert alert-warning">
         <g:message code="events.management.no.persisted.events"/>
     </div>
 </g:if>

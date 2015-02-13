@@ -49,7 +49,6 @@ environments {
             username = "tipster11"
             password = "%^NHkiju>lki!"
             url = "jdbc:sqlserver://k3nqcihx0j.database.windows.net:1433;database=Tipster11DB;user=tipster11@k3nqcihx0j;password=%^NHkiju>lki!;encrypt=true;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
-            logSql = true
             properties {
                 // See http://grails.org/doc/latest/guide/conf.html#dataSource for documentation
                 jmxEnabled = true

@@ -124,6 +124,42 @@ environments {
             }
         }
     }
+    test {
+        grails.logging.jul.usebridge = true
+        grails.serverURL = "http://tipster11prodbm.cloudapp.net:8080/"
+        betfair {
+            applicationKey = "CXQs7I5AmOYwVmHA"
+
+            username = "tipsterapi"
+            password = "tipster112015"
+            certificatePassword = "tipster112015"
+            certificateFilename = "client-2048.p12"
+
+            api {
+                betting {
+                    exchangeEndpoint = "https://developer.betfair.com/api.betfair.com/exchange/betting/json-rpc/v1"
+
+                    bettingApi = "SportsAPING/"
+                    bettingApiVersion = "v1.0/"
+
+                    actionListEvents = "listEvents"
+                    actionListCountries = "listCountries"
+                    actionListCompetitions = "listCompetitions"
+                    actionListMarketTypes = "listMarketTypes"
+                    actionListEvents = "listEvents"
+                    actionListMarketCatalogue = "listMarketCatalogue"
+                }
+                accounts {
+                    accountsEndpoint = "https://developer.betfair.com/api.betfair.com/exchange/account/json-rpc/v1"
+
+                    accountsApi = "AccountAPING/"
+                    accountsApiVersion = "v1.0/"
+
+                    actionApplicationKeys = "getDeveloperAppKeys"
+                }
+            }
+        }
+    }
     production {
         grails.logging.jul.usebridge = false
         // TODO: grails.serverURL = "http://www.changeme.com"

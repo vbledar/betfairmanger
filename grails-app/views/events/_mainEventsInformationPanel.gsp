@@ -1,6 +1,6 @@
 <div class="col-xs-12 col-sm-8 col-md-9">
 
-    <div class="page-header">
+    <div class="panel-body bg-info">
         <h4>
             <g:message code="events.management.title"/>
         </h4>

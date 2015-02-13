@@ -77,4 +77,17 @@ class EventsController {
         def markets = eventsService.getMarketsByEvent(event)
         render template: 'mainMarketsInformationPanel', model: [event: event, markets: markets]
     }
+
+    def renderMarketRunners() {
+        Market market = Market.findByMarketId(params.marketId)
+        if (!market) {
+            render (contentType: 'application/json') {
+                ['success': false, 'message': message(code: 'markets.management.market.for.id.not.found', args: [params.marketId])]
+            }
+            return
+        }
+
+        def runners = market.runners.sort { it.sortPriority }
+        render template: 'runnersList', model: [market: market, runners: runners]
+    }
 }

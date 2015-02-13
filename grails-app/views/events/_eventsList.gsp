@@ -60,10 +60,10 @@
             if (competitionSelected === false) {
                 competitionSelected = true;
 
-                $('.selectable-row').removeClass("info");
+                $('.selectable-row').removeClass("warning");
                 $('.selectable-row').fadeToggle("slow", "linear");
                 $('#' + selectedRowId).fadeToggle();
-                $('#' + selectedRowId).addClass("info");
+                $('#' + selectedRowId).addClass("warning");
 
                 $('#marketsContainer').fadeOut();
                 $('#marketsContainer').html("");
@@ -71,7 +71,7 @@
                 loadEventMarkets(eventId);
             } else {
                 competitionSelected = false;
-                $('.selectable-row').removeClass("info");
+                $('.selectable-row').removeClass("warning");
                 $('.selectable-row').each(function () {
                     var currentRowId = $(this).attr('id')
                     if (currentRowId != selectedRowId) {

@@ -1,5 +1,5 @@
 <g:if test="${!markets || markets.size() == 0}">
-    <div class="alert alert-info">
+    <div class="alert alert-warning">
         <g:message code="markets.management.no.persisted.markets"/>
     </div>
 </g:if>
