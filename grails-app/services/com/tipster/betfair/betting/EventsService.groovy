@@ -175,7 +175,7 @@ class EventsService extends BaseService {
         for (def record : jsonResponse.result) {
             LazyMap marketInformation = (LazyMap) record
 
-            market = Market.findById(marketInformation.marketId)
+            market = Market.findByMarketId(marketInformation.marketId)
             if (!market) {
                 market = new Market()
                 market.marketId = marketInformation.marketId

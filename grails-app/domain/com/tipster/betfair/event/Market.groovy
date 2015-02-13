@@ -9,6 +9,10 @@ class Market {
 
     static hasMany = [runners : Runner]
 
+    static mapping = {
+        id name: 'marketId', generator: 'assigned'
+    }
+
     static constraints = {
         event nullable: false
         marketType nullable: false
