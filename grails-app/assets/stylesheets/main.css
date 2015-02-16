@@ -1,9 +1,17 @@
-body {
-    background-color: #000000 !important;
-    padding-top: 50px !important;
-    padding-bottom: 150px !important;
-}
-
 .selectable-row {
     cursor: pointer;
+}
+
+.table-cell-horizontal-center td,
+.table-cell-horizontal-center th {
+    text-align: center;
+}
+
+.table-cell-vertical-middle td {
+    vertical-align: middle;
+}
+
+.no-margin-on-checkbox {
+    margin-top: 0px;
+    margin-bottom: 0px;
 }

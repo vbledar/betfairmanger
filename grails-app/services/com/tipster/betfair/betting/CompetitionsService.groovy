@@ -88,4 +88,14 @@ class CompetitionsService {
             eq ('country', country)
         }
     }
+
+    def retrieveCompetitions(params) {
+        def criteria = Competition.createCriteria()
+        def results = criteria.list(max: params.max, offset: params.offset) {
+            if (params.country) {
+                Country country = Country.findByCountryCode(params.country)
+                eq ('country', country)
+            }
+        }
+    }
 }

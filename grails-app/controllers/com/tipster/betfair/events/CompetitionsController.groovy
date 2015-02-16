@@ -9,8 +9,19 @@ class CompetitionsController extends BaseController {
     def competitionsService
 
     def manageCompetitions() {
-        def competitions = Competition.list()
+        if (!params.max) params.max = 15
+        if (!params.offset) params.offset = 0
+
+        def competitions = competitionsService.retrieveCompetitions(params)
         render view: 'manageCompetitions', model: [competitions: competitions]
+    }
+
+    def filteredCompetitions() {
+        if (!params.max) params.max = 15
+        if (!params.offset) params.offset = 0
+
+        def competitions = competitionsService.retrieveCompetitions(params)
+        render view: '_persistedCompetitions', model: [competitions: competitions]
     }
 
     def retrieveBetfairCompetitions() {

@@ -4,10 +4,13 @@ class MarketType {
 
     String name
 
+    Boolean automaticRetrieval
+
     transient Boolean active
 
     static constraints = {
         name nullable: false
+        automaticRetrieval nullable: true
         active nullable: true
     }
 

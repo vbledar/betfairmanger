@@ -66,4 +66,16 @@ class MarketTypesService {
 
         return marketTypes
     }
+
+    def updateMarketTypeAutomaticRetrievalState(MarketType marketType) {
+        marketType.automaticRetrieval = !marketType.automaticRetrieval
+        if (!marketType.save()) {
+            log.error "Could not update market type's automatic retrieval state."
+            marketType.errors.each {
+                log.error it
+            }
+            return false
+        }
+        return true
+    }
 }

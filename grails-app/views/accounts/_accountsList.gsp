@@ -1,5 +1,5 @@
-<div class="panel panel-default table-responsive">
-    <table class="table table-cell-horizontal-center table-cell-vertical-middle">
+<div class="box-body table-responsive no-padding">
+    <table class="table table-bordered table-hover dataTable table-cell-horizontal-center table-cell-vertical-middle">
         <thead>
         <th>
             <g:message code="form.field.developer.app.id"/>
@@ -74,7 +74,7 @@
                     <g:if test="${showActions}">
                         <th>
                             <div class="btn-group">
-                                <g:link controller="accounts" action="deleteAccount" data-element-id="${appVersion?.id}" class="btn btn-danger delete-application">
+                                <g:link controller="accounts" action="deleteAccount" data-element-id="${appVersion?.id}" class="btn btn-sm btn-flat btn-danger delete-application">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </g:link>
                             </div>

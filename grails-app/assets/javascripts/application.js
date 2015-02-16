@@ -5,8 +5,16 @@
 // You're free to add application-wide JavaScript to this file, but it's generally better 
 // to create separate JavaScript files as needed.
 //
-//= require jquery
-//= require bootstrap
+//= plugins/morris/morris.min
+//= plugins/sparkline/jquery.sparkline.min
+//= plugins/jvectormap/jquery-jvectormap-1.2.2.min
+//= plugins/jvectormap/jquery-jvectormap-world-mill-en
+//= plugins/jqueryKnob/jquery.knob
+//= plugins/daterangepicker/daterangepicker
+//= plugins/datepicker/bootstrap-datepicker
+//= plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min
+//= plugins/iCheck/icheck.min
+//= AdminLTE/app
 //= require notify-combined
 //= require_tree .
 //= require_self
@@ -35,4 +43,35 @@ function showWarnMessage(message) {
 
 function showErrorMessage(message) {
     $.notify(message, 'error');
+}
+
+function ajaxCallToServer(url, divToUpdate, divToLoading) {
+
+    addLoadingStateInElement(divToLoading);
+    $.post(url, function (data) {
+        console.log("POST executed");
+    }).done(function (data) {
+        removeLoadingStateFromElement(divToLoading);
+
+        if (data.success === false) {
+            showErrorMessage(data.message);
+            return;
+        }
+
+        $('#'+divToUpdate).html(data);
+    }).fail(function (data) {
+        removeLoadingStateFromElement(divToLoading);
+        showErrorMessage(data);
+    });
+
+}
+
+function addLoadingStateInElement(elementId) {
+    $('#'+elementId).append("<div class='overlay'></div>");
+    $('#'+elementId).append("<div class='loading-img'></div>");
+}
+
+function removeLoadingStateFromElement(elementId) {
+    $('#'+elementId).find('.overlay').remove();
+    $('#'+elementId).find('.loading-img').remove();
 }

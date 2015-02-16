@@ -24,11 +24,15 @@
 </div>
 
 
-<script type="application/javascript">
+<g:javascript>
 
-    $(function () {
+
+        console.log("JQuery has been found.");
         $('#retrieveBetfairAccounts').off('click').on('click', function (event) {
             event.preventDefault();
+            var divToUpdate = $(this).attr('div-to-update');
+            var divToOverlay = $(this).attr('div-to-overlay');
+            var divToLoading = $(this).attr('div-to-loading');
 
             var url = $(this).attr('href')
             $.post(url, function (data) {
@@ -78,6 +82,6 @@
                 showErrorMessage(data);
             })
         });
-    });
+//    });
 
-</script>
+</g:javascript>

@@ -7,10 +7,13 @@ import com.tipster.betfair.exceptions.BetfairWrapperException
 class CountriesController extends BaseController {
 
     def eventsService
+    def countriesService
 
     def manageCountries() {
 
-        if (!params.max) params.max = 20
+        if (!params.max) params.max = 15
+        if (!params.offset) params.offset = 0
+
         def countries = Country.list(params)
         render view: 'country/manageCountries', model: [countries: countries]
     }
@@ -18,6 +21,27 @@ class CountriesController extends BaseController {
     def manageCountriesFiltered() {
         def countries = Country.list(params)
         render template: 'country/persistedCountriesFiltered', model: [countries: countries]
+    }
+
+    def setCountryAutomaticRetrieval() {
+        Country country = Country.findByCountryCode(params.countryCode)
+        if (!country) {
+            render (contentType: 'application/json') {
+                ['success': false, 'message': message(code: 'countries.management.country.for.code.not.found', args: [params.countryCode])]
+            }
+            return
+        }
+
+        if (!countriesService.updateCountryAutomaticRetrievalState(country)) {
+            render (contentType: 'application/json') {
+                ['success': false, 'message': message(code: 'countries.management.country.not.updated', args: [params.countryCode])]
+            }
+        }
+
+        render (contentType: 'application/json') {
+            ['success': true, 'message': message(code: 'countries.management.country.updated.successfully', args: [params.countryCode])]
+        }
+
     }
 
     def retrieveBetfairCountries() {

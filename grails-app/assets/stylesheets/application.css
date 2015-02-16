@@ -8,7 +8,11 @@
 * compiled file, but it's generally better to create a new file per style scope.
 *
 *= require main
-*= require bootstrap
-*= require mobile
+*= require morris/morris
+*= require jvectormap/jquery-jvectormap-1.2.2
+*= require datepicker/datepicker3
+*= require daterangepicker/daterangepicker-bs3
+*= require bootstrap-wysihtml5/bootstrap3-wysihtml5.min
+*= require AdminLTE
 *= require_self
 */

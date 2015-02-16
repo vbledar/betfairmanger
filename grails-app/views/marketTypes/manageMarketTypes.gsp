@@ -17,56 +17,59 @@
 
 <body>
 
-<div class="page-header">
-    <h4>
-        <g:message code="market.types.management.title"/>
-    </h4>
+<div class="row">
+    <section class="col-xs-12">
+        <div id="marketTypesBoxContainer" class="box box-success">
+
+            <div class="box-header">
+                <i class="fa fa-paw"></i>
+
+                <h3 class="box-title">
+                    <g:message code="market.types.management.title"/>
+                </h3>
+
+                <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+                    <div class="btn-group" data-toggle="btn-toggle">
+                        <g:link elementId="retrieveMarketTypesFromBetFair"
+                                controller="marketTypes"
+                                action="retrieveBetfairMarketTypes"
+                                div-to-update="persistedMarketTypes"
+                                div-loading-state="marketTypesBoxContainer"
+                                class="btn btn-info">
+                            <span class="glyphicon glyphicon-download"></span> <g:message
+                                code="market.types.management.button.retrieve.market.types.betfair"/>
+                        </g:link>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-body">
+                <div id="persistedMarketTypes" class="peristed-market-types">
+                    <g:render template="persistedMarketTypes" model="[marketTypes: marketTypes]"/>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 
-<div class="btn-group" role="group">
-    <g:link elementId="retrieveMarketTypesFromBetFair" controller="marketTypes" action="retrieveBetfairMarketTypes"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-download"></span> <g:message
-            code="market.types.management.button.retrieve.market.types.betfair"/>
-    </g:link>
-</div>
+<g:javascript>
 
-<br />
+    function updateCheckboxesLayout() {
+        console.log("I'm running!");
+        $('.peristed-market-types').iCheck();
+    }
 
-<div id="persistedMarketTypes">
-    <g:render template="persistedMarketTypes" model="[marketTypes: marketTypes]"/>
-</div>
+    $('#retrieveMarketTypesFromBetFair').off('click').on('click', function (event) {
+        event.preventDefault();
 
-<script type="application/javascript">
+        var url = $(this).attr('href');
+        var divToUpdate = $(this).attr('div-to-update');
+        var divToLoading = $(this).attr('div-loading-state');
 
-    $(function () {
-        $('#retrieveMarketTypesFromBetFair').off('click').on('click', function (event) {
-            event.preventDefault();
-
-            var url = $(this).attr('href')
-            $.post(url, function (data) {
-                console.log("POST executed");
-            }).done(function (data) {
-                console.log("POST success");
-                if (data.success === false) {
-                    console.log("POST failed");
-                    console.log("Server message is: " + data.message)
-                    showErrorMessage(data.message);
-                    return;
-                }
-
-                console.log("POST server response successful");
-                console.log(data);
-                showSuccessMessage("Market types were retrieved successfully from BetFair.")
-                $('#persistedMarketTypes').html(data);
-            }).fail(function (data) {
-                console.log("POST failed.");
-                console.log(data);
-                showErrorMessage(data);
-            });
-        });
+        ajaxCallToServer(url, divToUpdate, divToLoading);
     });
-</script>
+
+</g:javascript>
 
 </body>
 </html>

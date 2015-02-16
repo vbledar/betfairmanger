@@ -1,8 +1,3 @@
-<div class="page-header">
-    <h5>
-        <g:message code="accounts.management.persisted.accounts"/>
-    </h5>
-</div>
 
 <div class="row">
     <div class="col-sm-12">

@@ -131,4 +131,6 @@ databaseChangeLog = {
 	include file: 'added-markets-runners.groovy'
 
 	include file: 'add-odds-to-runner.groovy'
+
+	include file: 'add-auto-retrieval.groovy'
 }

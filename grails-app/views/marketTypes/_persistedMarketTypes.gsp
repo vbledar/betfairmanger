@@ -1,9 +1,3 @@
-<div class="page-header">
-    <h5>
-        <g:message code="market.types.management.persisted.market.types"/>
-    </h5>
-</div>
-
 <div class="row">
     <div class="col-sm-12">
         <div id="persistedMarketTypesContainer">
@@ -15,7 +9,9 @@
                 </div>
             </g:if>
             <g:else>
-                <g:render template="marketTypesList" model="[marketTypes: marketTypes]"/>
+                <div id="persistedMarketTypesList">
+                    <g:render template="persistedMarketTypesFiltered" model="[marketTypes: marketTypes]"/>
+                </div>
             </g:else>
         </div>
     </div>

@@ -10,17 +10,17 @@
 
 <body>
 
-<g:render template="/mainFilters" model="[countries: countries]"/>
+%{--<g:render template="/mainFilters" model="[countries: countries]"/>--}%
 
-<br />
+%{--<br />--}%
 
-<div class="clearfix"></div>
+%{--<div class="clearfix"></div>--}%
 
-<div id="mainInformationPanel">
-    <div class="alert alert-info">
-        <g:message code="user.message.please.select.country"/>
-    </div>
-</div>
+%{--<div id="mainInformationPanel">--}%
+    %{--<div class="alert alert-info">--}%
+        %{--<g:message code="user.message.please.select.country"/>--}%
+    %{--</div>--}%
+%{--</div>--}%
 
 </body>
 </html>

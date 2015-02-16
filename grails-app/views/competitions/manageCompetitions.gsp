@@ -6,7 +6,7 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta name="layout" content="main"/>
 
@@ -17,51 +17,73 @@
 
 <body>
 
-<div class="page-header">
-    <h4>
-        <g:message code="competitions.management.title"/>
-    </h4>
+<div class="row">
+    <section class="col-xs-12">
+        <div id="competitionsBoxContainer" class="box box-success">
+            <div id="persistedCompetitionsOverlay"></div>
+            <div id="persistedCompetitionsLoading"></div>
+
+            <div class="box-header">
+                <i class="fa fa-paw"></i>
+
+                <h3 class="box-title">
+                    <g:message code="competitions.management.title"/>
+                </h3>
+
+                <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+                    <div class="btn-group" data-toggle="btn-toggle">
+                        <g:link elementId="retrieveCompetitionsFromBetFair" controller="competitions"
+                                action="retrieveBetfairCompetitions"
+                                div-to-update="persistedCompetitions"
+                                div-to-overlay="persistedCompetitionsOverlay"
+                                div-to-loading="persistedCompetitionsLoading"
+                                class="btn btn-info">
+                            <span class="glyphicon glyphicon-download"></span> <g:message
+                                code="competitions.management.button.retrieve.competitions.betfair"/>
+                        </g:link>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-body">
+                <div id="persistedCompetitions">
+                    <g:render template="persistedCompetitions" model="[competitions: competitions]"/>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 
-<div class="btn-group" role="group">
-    <g:link elementId="retrieveCompetitionsFromBetFair" controller="competitions" action="retrieveBetfairCompetitions"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-download"></span> <g:message
-            code="competitions.management.button.retrieve.competitions.betfair"/>
-    </g:link>
-</div>
-
-<br />
-
-<div id="persistedCompetitions">
-    <g:render template="persistedCompetitions" model="[competitions: competitions]"/>
-</div>
 
 <script type="application/javascript">
 
     $(function () {
         $('#retrieveCompetitionsFromBetFair').off('click').on('click', function (event) {
             event.preventDefault();
+            var divToUpdate = $(this).attr('div-to-update');
+            var divToOverlay = $(this).attr('div-to-overlay');
+            var divToLoading = $(this).attr('div-to-loading');
+
+            $('#'+divToOverlay).addClass('overlay');
+            $('#'+divToLoading).addClass('loading-img');
 
             var url = $(this).attr('href')
             $.post(url, function (data) {
                 console.log("POST executed");
             }).done(function (data) {
-                console.log("POST success");
+                $('#'+divToOverlay).removeClass('overlay');
+                $('#'+divToLoading).removeClass('loading-img');
+
                 if (data.success === false) {
-                    console.log("POST failed");
-                    console.log("Server message is: " + data.message)
                     showErrorMessage(data.message);
                     return;
                 }
 
-                console.log("POST server response successful");
-                console.log(data);
                 showSuccessMessage("Competitions were retrieved successfully from BetFair.")
-                $('#persistedCompetitions').html(data);
+                $('#'+divToUpdate).html(data);
             }).fail(function (data) {
-                console.log("POST failed.");
-                console.log(data);
+                $('#'+divToOverlay).removeClass('overlay');
+                $('#'+divToLoading).removeClass('loading-img');
                 showErrorMessage(data);
             });
         });
