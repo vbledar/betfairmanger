@@ -8,6 +8,7 @@ import com.tipster.betfair.event.Competition
 import com.tipster.betfair.utils.http.JsonRpcRequest
 import grails.transaction.Transactional
 import groovy.json.JsonSlurper
+import groovy.json.internal.LazyMap
 
 @Transactional
 class CompetitionsService {
@@ -41,6 +42,9 @@ class CompetitionsService {
         for (def competitionResults : jsonResponse.result) {
             log.debug "Result: " + jsonResponse.result
             for (def competitionResult : competitionResults) {
+                LazyMap competitionRecord = (LazyMap) competitionResult
+                log.debug "Has competition key: " + competitionRecord.hasProperty("competition")
+                log.debug "Has id key: " + competitionRecord.hasProperty("id")
                 log.debug "Competition result is: " + competitionResult
                 try {
                     log.debug "Competition name: " + competitionResult.name
