@@ -137,4 +137,6 @@ databaseChangeLog = {
 	include file: 'add-competitions-counter.groovy'
 
 	include file: 'add-events-counter.groovy'
+
+	include file: 'add-country-name.groovy'
 }

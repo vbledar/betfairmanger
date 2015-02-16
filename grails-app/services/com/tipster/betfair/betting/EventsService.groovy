@@ -62,9 +62,10 @@ class EventsService extends BaseService {
 
                 if (country) {
                     country.countryInformation = countryInformation
+                    country.countryName = countryInformation?.name
                 } else {
                     // create a new country instance
-                    country = new Country(countryCode: countryCode.countryCode, countryInformation: countryInformation)
+                    country = new Country(countryCode: countryCode.countryCode, countryName: countryInformation?.name, countryInformation: countryInformation)
                 }
 
                 try {

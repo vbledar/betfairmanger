@@ -1,10 +1,12 @@
 package com.tipster.betfair
 
 import com.tipster.betfair.event.Competition
+import sun.security.pkcs11.wrapper.Functions
 
 class Country {
 
     String countryCode
+    String countryName
 
     Boolean automaticRetrieval
 
@@ -26,17 +28,17 @@ class Country {
 
     static constraints = {
         countryCode nullable: false
+        countryName nullable: true
         automaticRetrieval nullable: true
         countryInformation nullable: true
         competitionsCounter nullable: true
     }
 
     String getCountryName() {
-        return countryInformation ? countryInformation?.name : countryCode
+        return countryName ? countryName : countryCode
     }
 
     String getCompetitionsCounted() {
-        if (competitionsCounter) return competitionsCounter
-        def size = Competition.countByCountry(this)
+        return competitionsCounter ? competitionsCounter : 0
     }
 }

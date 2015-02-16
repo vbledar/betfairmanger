@@ -5,6 +5,7 @@ import com.tipster.betfair.Country
 import com.tipster.betfair.CountryInformation
 import com.tipster.betfair.MarketFilter
 import com.tipster.betfair.event.Competition
+import com.tipster.betfair.event.MarketType
 import com.tipster.betfair.util.json.JsonConverter
 import com.tipster.betfair.utils.http.JsonRpcRequest
 import grails.transaction.Transactional
@@ -155,10 +156,23 @@ class CompetitionsService {
     def retrieveCompetitions(params) {
         def criteria = Competition.createCriteria()
         def results = criteria.list(max: params.max, offset: params.offset) {
-            if (params.countryCode) {
+            if (params.countryCode != null && !params.countryCode.isEmpty()) {
+                log.debug "Country code is: " + params.countryCode
                 Country country = Country.findByCountryCode(params.countryCode)
                 eq ('country', country)
             }
         }
+    }
+
+    def updateCompetitionAutomaticRetrievalState(Competition competition) {
+        competition.automaticRetrieval = !competition.automaticRetrieval
+        if (!competition.save()) {
+            log.error "Could not update competition's automatic retrieval state."
+            competition.errors.each {
+                log.error it
+            }
+            return false
+        }
+        return true
     }
 }

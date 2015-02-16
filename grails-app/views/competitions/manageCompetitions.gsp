@@ -31,11 +31,11 @@
             <div class="box-body hidden-xs">
                 <ul class="list-group" style="max-height: 500px; overflow-y: scroll">
                     <g:each in="${session["countries"]}" var="country">
-                        <li div-to-update="persistedCompetitions"
+                        <li div-to-update="competitionsBoxContainer"
                             div-to-loading="competitionsBoxContainer"
                             class="list-group-item selectable-row competition-filter-by-company ${params.countryCode && params.countryCode?.equalsIgnoreCase(country?.countryCode) ? 'active' : ''}" country-code="${country?.countryCode}">
                             <span class="badge">
-                                ${country?.getCompetitionsCounted()}
+                                ${country?.competitionsCounter ? country?.competitionsCounter : 0}
                             </span>
                             ${country?.getCountryName()}
                         </li>
@@ -51,7 +51,7 @@
                           optionValue="countryName"
                           noSelection="['': 'Please select']"
                           value="${selectedCountry?.countryCode}"
-                          div-to-update="persistedCompetitions"
+                          div-to-update="competitionsBoxContainer"
                           div-to-loading="competitionsBoxContainer"
                 />
             </div>
@@ -59,36 +59,7 @@
     </section>
     <section class="col-xs-12 col-sm-9 col-md-10">
         <div id="competitionsBoxContainer" class="box box-success">
-            <div id="persistedCompetitionsOverlay"></div>
-            <div id="persistedCompetitionsLoading"></div>
-
-            <div class="box-header">
-                <i class="fa fa-paw"></i>
-
-                <h3 class="box-title">
-                    <g:message code="competitions.management.title"/>
-                </h3>
-
-                <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
-                    <div class="btn-group" data-toggle="btn-toggle">
-                        <g:link elementId="retrieveCompetitionsFromBetFair" controller="competitions"
-                                action="retrieveBetfairCompetitions"
-                                params="[countryCode: params.countryCode]"
-                                div-to-update="persistedCompetitions"
-                                div-to-loading="competitionsBoxContainer"
-                                class="btn btn-info">
-                            <span class="glyphicon glyphicon-download"></span> <g:message
-                                code="competitions.management.button.retrieve.competitions.betfair"/>
-                        </g:link>
-                    </div>
-                </div>
-            </div>
-
-            <div class="box-body">
-                <div id="persistedCompetitions">
-                    <g:render template="persistedCompetitions" model="[competitions: competitions]"/>
-                </div>
-            </div>
+            <g:render template="competitionsBoxContainer" model="[competitions: competitions]"/>
         </div>
     </section>
 </div>
@@ -97,33 +68,6 @@
 <script type="application/javascript">
 
     $(function () {
-        $('#retrieveCompetitionsFromBetFair').off('click').on('click', function (event) {
-            event.preventDefault();
-            var divToUpdate = $(this).attr('div-to-update');
-            var divToLoading = $(this).attr('div-to-loading');
-
-            addLoadingStateInElement(divToLoading);
-
-
-            var url = $(this).attr('href')
-            $.post(url, function (data) {
-                console.log("POST executed");
-            }).done(function (data) {
-                removeLoadingStateFromElement(divToLoading);
-
-                if (data.success === false) {
-                    showErrorMessage(data.message);
-                    return;
-                }
-
-                showSuccessMessage("Competitions were retrieved successfully from BetFair.")
-                $('#'+divToUpdate).html(data);
-            }).fail(function (data) {
-                removeLoadingStateFromElement(divToLoading);
-                showErrorMessage(data);
-            });
-        });
-
         $('#countrySelection').change(function() {
             var divToUpdate = $(this).attr('div-to-update');
             var divToLoading = $(this).attr('div-to-loading');
@@ -152,7 +96,7 @@
 
             addLoadingStateInElement(divToLoading);
 
-            var url = "${createLink(controller: 'competitions', action: 'filteredCompetitions')}";
+            var url = "${createLink(controller: 'competitions', action: 'manageCompetitionsBoxContainer')}";
             $.post(url, parameters, function (data) {
                 console.log("POST executed");
             }).done(function (data) {

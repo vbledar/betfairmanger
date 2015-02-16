@@ -74,6 +74,8 @@
     $('.iCheck-helper').off('click').on('click', function(event) {
         event.preventDefault();
 
+        addLoadingStateInElement('countriesBoxContainer');
+
         var countryCode = $(this).attr('country-id');
         var parameters = {}
         parameters.countryCode = countryCode;
