@@ -67,8 +67,7 @@ class CompetitionsController extends BaseController {
 
             competitionsService.retrieveCompetitionsFromBetfairForCountry(country)
 
-            def competitions = competitionsService.retrieveCompetitions(params)
-            render template: 'persistedCompetitions', model: [competitions: competitions, countryCode: params.countryCode]
+            redirect action: 'filteredCompetitions', model: [countryCode: params.countryCode]
         } catch (ex) {
             log.error "Failed to retrieve competitions from BetFair.", ex
             render (contentType: 'application/json') {
