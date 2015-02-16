@@ -39,18 +39,12 @@
                         ${country?.getCompetitionsCounted()}
                     </label>
                 </td>
-                <td class="">
-                    <div class="checkbox no-margin-on-checkbox">
-                        <label style="padding-left: 0px">
-                            <g:if test="${country?.automaticRetrieval}">
-                                <input id="autoOnCountry${country?.countryCode}" name="automaticRetrieval" type="checkbox" checked style="position: absolute; opacity: 0;">
-                            </g:if>
-                            <g:else>
-                                <input id="autoOnCountry${country?.countryCode}" name="automaticRetrieval" type="checkbox" style="position: absolute; opacity: 0;">
-                            </g:else>
-                            <ins class="iCheck-helper" country-id="${country?.countryCode}" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins>
-                        </label>
-                    </div>
+                <td>
+                    <label class="label selectable-row ${country?.automaticRetrieval ? 'label-success' : 'label-danger'} update-country-auto-state"
+                           country-code-name="${country?.countryCode}"
+                           div-to-loading="countriesBoxContainer">
+                        ${country?.automaticRetrieval ? 'Enabled' : 'Disabled'}
+                    </label>
                 </td>
                 <td class="text-right">
                     <div class="btn-group">
@@ -71,12 +65,16 @@
 <script type="application/javascript">
 
     console.log("I'm running!");
-    $('.iCheck-helper').off('click').on('click', function(event) {
+    $('.update-country-auto-state').off('click').on('click', function(event) {
         event.preventDefault();
 
-        addLoadingStateInElement('countriesBoxContainer');
+        var element = $(this);
+        var divToLoading = $(this).attr('div-to-loading');
+        var wasEnabled = $(this).hasClass('label-success');
 
-        var countryCode = $(this).attr('country-id');
+        addLoadingStateInElement(divToLoading);
+
+        var countryCode = $(this).attr('country-code-name');
         var parameters = {}
         parameters.countryCode = countryCode;
 
@@ -84,16 +82,25 @@
         $.post(url, parameters, function (data) {
             console.log("POST executed");
         }).done(function (data) {
-            removeLoadingStateFromElement('countriesBoxContainer');
+            removeLoadingStateFromElement(divToLoading);
 
             if (data.success === false) {
                 showErrorMessage(data.message);
                 return;
             }
 
+            if (wasEnabled) {
+                $(element).removeClass('label-success').addClass('label-danger');
+                $(element).text('Disabled');
+            }
+            else {
+                $(element).removeClass('label-danger').addClass('label-success');
+                $(element).text('Enabled');
+            }
+
             showSuccessMessage(data.message);
         }).fail(function (data) {
-            removeLoadingStateFromElement('countriesBoxContainer');
+            removeLoadingStateFromElement(divToLoading);
             showErrorMessage(data);
         });
     });
