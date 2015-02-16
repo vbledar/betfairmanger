@@ -41,7 +41,10 @@ class CompetitionsService {
 
         Competition competition
 
-        def unknown = JsonConverter.convertFromJson(jsonResponse.result[0].toString(), Competition)
+        log.debug jsonResponse.result
+        log.debug jsonResponse.result[0]
+        log.debug jsonResponse?.result?.competition
+        def unknown = JsonConverter.convertFromJson(jsonResponse.result.toString(), Competition)
         for (def competitionResults : jsonResponse.result) {
 
             log.debug "Competition id: " + competition?.competitionId
