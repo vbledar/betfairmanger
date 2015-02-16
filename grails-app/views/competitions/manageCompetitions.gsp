@@ -18,7 +18,46 @@
 <body>
 
 <div class="row">
-    <section class="col-xs-12">
+    <section class="col-xs-12 col-sm-3 col-md-2">
+        <div id="countriesFiltersContainer" class="box box-success">
+            <div class="box-header">
+                <i class="fa fa-flag"></i>
+
+                <h3 class="box-title">
+                    <g:message code="countries.management.filter.by.country"/>
+                </h3>
+            </div>
+
+            <div class="box-body hidden-xs">
+                <ul class="list-group" style="max-height: 500px; overflow-y: scroll">
+                    <g:each in="${session["countries"]}" var="country">
+                        <li div-to-update="persistedCompetitions"
+                            div-to-loading="competitionsBoxContainer"
+                            class="list-group-item selectable-row competition-filter-by-company ${params.countryCode && params.countryCode?.equalsIgnoreCase(country?.countryCode) ? 'active' : ''}" country-code="${country?.countryCode}">
+                            <span class="badge">
+                                ${country?.getCompetitionsCounted()}
+                            </span>
+                            ${country?.getCountryName()}
+                        </li>
+                    </g:each>
+                </ul>
+            </div>
+            <div class="box-body visible-xs">
+                <g:select id="countrySelection"
+                          class="form-control input-sm"
+                          name="country"
+                          from="${session["countries"]}"
+                          optionKey="countryCode"
+                          optionValue="countryName"
+                          noSelection="['': 'Please select']"
+                          value="${selectedCountry?.countryCode}"
+                          div-to-update="persistedCompetitions"
+                          div-to-loading="competitionsBoxContainer"
+                />
+            </div>
+        </div>
+    </section>
+    <section class="col-xs-12 col-sm-9 col-md-10">
         <div id="competitionsBoxContainer" class="box box-success">
             <div id="persistedCompetitionsOverlay"></div>
             <div id="persistedCompetitionsLoading"></div>
@@ -34,9 +73,9 @@
                     <div class="btn-group" data-toggle="btn-toggle">
                         <g:link elementId="retrieveCompetitionsFromBetFair" controller="competitions"
                                 action="retrieveBetfairCompetitions"
+                                params="[countryCode: params.countryCode]"
                                 div-to-update="persistedCompetitions"
-                                div-to-overlay="persistedCompetitionsOverlay"
-                                div-to-loading="persistedCompetitionsLoading"
+                                div-to-loading="competitionsBoxContainer"
                                 class="btn btn-info">
                             <span class="glyphicon glyphicon-download"></span> <g:message
                                 code="competitions.management.button.retrieve.competitions.betfair"/>
@@ -61,18 +100,16 @@
         $('#retrieveCompetitionsFromBetFair').off('click').on('click', function (event) {
             event.preventDefault();
             var divToUpdate = $(this).attr('div-to-update');
-            var divToOverlay = $(this).attr('div-to-overlay');
             var divToLoading = $(this).attr('div-to-loading');
 
-            $('#'+divToOverlay).addClass('overlay');
-            $('#'+divToLoading).addClass('loading-img');
+            addLoadingStateInElement(divToLoading);
+
 
             var url = $(this).attr('href')
             $.post(url, function (data) {
                 console.log("POST executed");
             }).done(function (data) {
-                $('#'+divToOverlay).removeClass('overlay');
-                $('#'+divToLoading).removeClass('loading-img');
+                removeLoadingStateFromElement(divToLoading);
 
                 if (data.success === false) {
                     showErrorMessage(data.message);
@@ -82,11 +119,56 @@
                 showSuccessMessage("Competitions were retrieved successfully from BetFair.")
                 $('#'+divToUpdate).html(data);
             }).fail(function (data) {
-                $('#'+divToOverlay).removeClass('overlay');
-                $('#'+divToLoading).removeClass('loading-img');
+                removeLoadingStateFromElement(divToLoading);
                 showErrorMessage(data);
             });
         });
+
+        $('#countrySelection').change(function() {
+            var divToUpdate = $(this).attr('div-to-update');
+            var divToLoading = $(this).attr('div-to-loading');
+
+            var countryCode = $('#countrySelection option:selected').val();
+
+            filterCompetitionByCountry(countryCode, divToUpdate, divToLoading);
+        });
+
+        $('.competition-filter-by-company').off('click').on('click', function(event) {
+            event.preventDefault();
+
+            $('.competition-filter-by-company').removeClass('active');
+            $(this).addClass('active');
+
+            var divToUpdate = $(this).attr('div-to-update');
+            var divToLoading = $(this).attr('div-to-loading');
+
+            var countryCode = $(this).attr('country-code');
+            filterCompetitionByCountry(countryCode, divToUpdate, divToLoading);
+        })
+
+        function filterCompetitionByCountry(countryCode, divToUpdate, divToLoading) {
+            var parameters = {};
+            parameters.countryCode = countryCode;
+
+            addLoadingStateInElement(divToLoading);
+
+            var url = "${createLink(controller: 'competitions', action: 'filteredCompetitions')}";
+            $.post(url, parameters, function (data) {
+                console.log("POST executed");
+            }).done(function (data) {
+                removeLoadingStateFromElement(divToLoading);
+
+                if (data.success === false) {
+                    showErrorMessage(data.message);
+                    return;
+                }
+
+                $('#'+divToUpdate).html(data);
+            }).fail(function (data) {
+                removeLoadingStateFromElement(divToLoading);
+                showErrorMessage(data);
+            });
+        }
     });
 </script>
 </body>

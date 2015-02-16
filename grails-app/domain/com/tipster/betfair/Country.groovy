@@ -10,6 +10,8 @@ class Country {
 
     CountryInformation countryInformation
 
+    Integer competitionsCounter = 0
+
     static belongsTo = [countryInformation: CountryInformation]
 
     static hasMany = [competitions: Competition]
@@ -26,6 +28,7 @@ class Country {
         countryCode nullable: false
         automaticRetrieval nullable: true
         countryInformation nullable: true
+        competitionsCounter nullable: true
     }
 
     String getCountryName() {
@@ -33,6 +36,7 @@ class Country {
     }
 
     String getCompetitionsCounted() {
+        if (competitionsCounter) return competitionsCounter
         def size = Competition.countByCountry(this)
     }
 }

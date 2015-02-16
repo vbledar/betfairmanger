@@ -133,4 +133,6 @@ databaseChangeLog = {
 	include file: 'add-odds-to-runner.groovy'
 
 	include file: 'add-auto-retrieval.groovy'
+
+	include file: 'add-competitions-counter.groovy'
 }

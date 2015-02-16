@@ -17,6 +17,7 @@
 <body>
 
 <div class="row">
+
     <section class="col-xs-12">
         <div id="countriesBoxContainer" class="box box-success">
             <div id="persistedCompetitionsOverlay"></div>

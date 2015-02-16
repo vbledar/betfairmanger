@@ -23,7 +23,7 @@
 
     <div class="col-xs-6 text-right">
         <div class="dataTables_paginate paging_bootstrap">
-            <util:remotePaginate controller="competitions" action="filteredCompetitions" total="${competitions.getTotalCount()}"
+            <util:remotePaginate controller="competitions" action="filteredCompetitions" params="[countryCode: params.countryCode]" total="${competitions.getTotalCount()}"
                                  update="persistedCompetitions"
                                  onLoading="addLoadingStateInElement('competitionsBoxContainer')"
                                  onComplete="removeLoadingStateFromElement('competitionsBoxContainer')"

@@ -15,6 +15,65 @@ class CompetitionsService {
     def grailsApplication
     def betfairApiService
 
+    def retrieveCompetitionsFromBetfairForCountry(Country country) {
+        String api = grailsApplication.config.betfair.api.betting.bettingApi
+        String apiVersion = grailsApplication.config.betfair.api.betting.bettingApiVersion
+        String action = grailsApplication.config.betfair.api.betting.actionListCompetitions
+
+        MarketFilter marketFilter = new MarketFilter()
+        marketFilter.addExchangeId("1")                         // by default UK marketplace
+        marketFilter.addEventTypeId("1")                        // by default only soccer
+        marketFilter.addMarketCountry(country.countryCode)      // add country
+
+        Map<String, Object> params = new HashMap<>()
+        params.put("filter", marketFilter)
+
+        JsonRpcRequest rpcRequest = new JsonRpcRequest()
+        rpcRequest.id = BetfairApiService.BETFAIR_API_ID
+        rpcRequest.jsonrpc = BetfairApiService.BETFAIR_JSON_RPC_VERSION
+        rpcRequest.method = api + apiVersion + action
+        rpcRequest.params = params
+
+        def jsonResponse = betfairApiService.executeBetfairApiCall(rpcRequest)
+        def competitions = new ArrayList<Competition>(1)
+
+        Competition competition
+        for (def competitionResults : jsonResponse.result) {
+            for (def competitionResult : competitionResults) {
+                try {
+                    if (competitionResult.competition) {
+                        log.debug "Competition region: " + competitionResult.competitionRegion
+                        log.debug "Competition id: " + competitionResult.competition.id
+                        log.debug "Competition name: " + competitionResult.competition.name
+
+                        competition = Competition.findByCompetitionId(competitionResult.competition.id)
+                        if (competition) continue
+
+                        // create a new competition instance
+                        competition = new Competition(competitionId: competitionResult?.competition?.id, competitionName: competitionResult?.competition?.name, country: country)
+
+                        if (!competition.save()) {
+                            log.error "Failed to persist competition with id [" + competitionResult?.competition?.id + "] and name [" + competitionResult?.competition?.name + "]."
+                            competition?.errors?.each {
+                                log.error it
+                            }
+                        }
+                    }
+                } catch (ex) {
+                    log.error "An unhandable exception occurred.", ex
+                }
+            }
+        }
+
+        country.competitionsCounter = Country.countByCountryCode(country.countryCode)
+        if (!country.save()) {
+            log.error "Failed to update country's competition counter."
+            country.errors.each {
+                log.error it
+            }
+        }
+    }
+
     def retrieveCompetitionsFromBetfair(Set<Country> countries) {
         String api = grailsApplication.config.betfair.api.betting.bettingApi
         String apiVersion = grailsApplication.config.betfair.api.betting.bettingApiVersion
@@ -43,8 +102,6 @@ class CompetitionsService {
 
         Competition competition
 
-//        def jsonSlurper = new JsonSlurper()
-//        def competitionResults = jsonSlurper.parseText(jsonResponse.result)
         for (def competitionResults : jsonResponse.result) {
             for (def competitionResult : competitionResults) {
                 log.debug "Attempting to process: " + competitionResult
@@ -92,8 +149,8 @@ class CompetitionsService {
     def retrieveCompetitions(params) {
         def criteria = Competition.createCriteria()
         def results = criteria.list(max: params.max, offset: params.offset) {
-            if (params.country) {
-                Country country = Country.findByCountryCode(params.country)
+            if (params.countryCode) {
+                Country country = Country.findByCountryCode(params.countryCode)
                 eq ('country', country)
             }
         }

@@ -54,7 +54,7 @@
                 </td>
                 <td class="text-right">
                     <div class="btn-group">
-                        <g:link controller="competitions" action="manageCompetitions" params="[country: country?.countryCode]" class="btn btn-sm btn-flat btn-primary">
+                        <g:link controller="competitions" action="manageCompetitions" params="[countryCode: country?.countryCode]" class="btn btn-sm btn-flat btn-primary">
                             <span class="fa fa-paw"></span>
                         </g:link>
                         <g:link controller="countries" action="deleteCountry" id="${country?.countryCode}"

@@ -21,18 +21,23 @@ class CompetitionsController extends BaseController {
         if (!params.offset) params.offset = 0
 
         def competitions = competitionsService.retrieveCompetitions(params)
+
         render view: '_persistedCompetitions', model: [competitions: competitions]
     }
 
     def retrieveBetfairCompetitions() {
         try {
-            log.info "Retrieving competitions from BetFair."
-            Country country = Country.findByCountryCode("GB")
-            Set<Country> countries = new HashSet<>(1)
-            countries.add(country)
+            Country country = Country.findByCountryCode(params.countryCode)
+            if (!country) {
+                render (contentType: 'application/json') {
+                    ['success': false, 'message': message(code: 'user.message.please.select.country')]
+                }
+            }
 
-            def competitions = competitionsService.retrieveCompetitionsFromBetfair(countries)
-            render template: 'persistedCompetitions', model: [competitions: competitions]
+            competitionsService.retrieveCompetitionsFromBetfairForCountry(country)
+
+            def competitions = competitionsService.retrieveCompetitions(params)
+            render template: 'persistedCompetitions', model: [competitions: competitions, countryCode: params.countryCode]
         } catch (ex) {
             log.error "Failed to retrieve competitions from BetFair.", ex
             render (contentType: 'application/json') {
