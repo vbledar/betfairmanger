@@ -39,7 +39,9 @@ class CompetitionsService {
 
         Competition competition
         for (def competitionResults : jsonResponse.result) {
+            log.debug "Result: " + jsonResponse.result
             for (def competitionResult : competitionResults) {
+                log.debug "Competition result is: " + competitionResult
                 try {
                     if (competitionResult.competition) {
                         log.debug "Competition region: " + competitionResult.competitionRegion

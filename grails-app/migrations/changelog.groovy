@@ -135,4 +135,6 @@ databaseChangeLog = {
 	include file: 'add-auto-retrieval.groovy'
 
 	include file: 'add-competitions-counter.groovy'
+
+	include file: 'add-events-counter.groovy'
 }

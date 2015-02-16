@@ -11,6 +11,8 @@ class Competition {
 
     Country country
 
+    transient Integer eventsCounter
+
     static hasMany = [events: Event]
 
     static constraints = {
@@ -20,6 +22,8 @@ class Competition {
         automaticRetrieval nullable: true
 
         country nullable: true
+
+        eventsCounter nullable: true
     }
 
     static mapping = {
