@@ -45,7 +45,7 @@ class CompetitionsService {
         log.debug jsonResponse.result[0]
         log.debug jsonResponse?.result?.competition
         for (def competitionResults : jsonResponse.result) {
-
+            log.debug "Competition results: " + competitionResults
             log.debug "Competition id: " + competitionResults?.id
             log.debug "Competition name: " + competitionResults?.name
 
