@@ -47,11 +47,11 @@ class CompetitionsService {
         for (def competitionResults : jsonResponse.result) {
             LazyMap competitionRecord = (LazyMap) competitionResults
             log.debug "Competition record is: " + competitionRecord?.toString()
-            if (competitionRecord.hasProperty("competition")) {
+            if (competitionRecord.containsKey("competition")) {
                 try {
                     log.debug "Found competition"
                     LazyMap competitionInformationRecord = (LazyMap) competitionRecord.get("competition")
-                    if (competitionInformationRecord.hasProperty("id")) {
+                    if (competitionInformationRecord.containsKey("id")) {
                         competition = Competition.findByCompetitionId(competitionInformationRecord.get("id"))
                         if (competition) continue
 
