@@ -45,18 +45,14 @@ class CompetitionsService {
         log.debug jsonResponse.result[0]
         log.debug jsonResponse?.result?.competition
         for (def competitionResults : jsonResponse.result) {
-            log.debug "Competition results: " + competitionResults
-            log.debug "Competition id: " + competitionResults?.id
-            log.debug "Competition name: " + competitionResults?.name
+            LazyMap competitionRecord = (LazyMap) competitionResults
 
-            for (def competitionResult : competitionResults) {
-                TreeMap competitionRecord = (TreeMap) competitionResult
-                log.debug "Has competition key: " + competitionRecord.containsKey("competition")
+            if (competitionRecord.hasProperty("competition")) {
                 try {
-                    log.debug "Competition name: " + competitionResult.name
-                    log.debug "Competition id: " + competitionResult.id
-                    if (competitionResult.competition) {
-                        competition = Competition.findByCompetitionId(competitionResult.id)
+                    log.debug "Found competition"
+                    LazyMap competitionInformationRecord = (LazyMap) competitionRecord.get("competition")
+                    if (competitionInformationRecord.hasProperty("id")) {
+                        competition = Competition.findByCompetitionId(competitionInformationRecord.get("id"))
                         if (competition) continue
 
                         // create a new competition instance
