@@ -56,10 +56,10 @@ class CompetitionsService {
                         if (competition) continue
 
                         // create a new competition instance
-                        competition = new Competition(competitionId: competitionResult?.id, competitionName: competitionResult?.name, country: country)
+                        competition = new Competition(competitionId: competitionInformationRecord.get("id"), competitionName: competitionInformationRecord.get("name"), country: country)
 
                         if (!competition.save()) {
-                            log.error "Failed to persist competition with id [" + competitionResult?.id + "] and name [" + competitionResult?.name + "]."
+                            log.error "Failed to persist competition with id [" + competitionInformationRecord.get("id") + "] and name [" + competitionInformationRecord.get("name") + "]."
                             competition?.errors?.each {
                                 log.error it
                             }
