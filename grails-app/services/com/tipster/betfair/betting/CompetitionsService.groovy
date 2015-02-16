@@ -43,19 +43,17 @@ class CompetitionsService {
             for (def competitionResult : competitionResults) {
                 log.debug "Competition result is: " + competitionResult
                 try {
+                    log.debug "Competition name: " + competitionResult.name
+                    log.debug "Competition id: " + competitionResult.id
                     if (competitionResult.competition) {
-                        log.debug "Competition region: " + competitionResult.competitionRegion
-                        log.debug "Competition id: " + competitionResult.competition.id
-                        log.debug "Competition name: " + competitionResult.competition.name
-
-                        competition = Competition.findByCompetitionId(competitionResult.competition.id)
+                        competition = Competition.findByCompetitionId(competitionResult.id)
                         if (competition) continue
 
                         // create a new competition instance
-                        competition = new Competition(competitionId: competitionResult?.competition?.id, competitionName: competitionResult?.competition?.name, country: country)
+                        competition = new Competition(competitionId: competitionResult?.id, competitionName: competitionResult?.name, country: country)
 
                         if (!competition.save()) {
-                            log.error "Failed to persist competition with id [" + competitionResult?.competition?.id + "] and name [" + competitionResult?.competition?.name + "]."
+                            log.error "Failed to persist competition with id [" + competitionResult?.id + "] and name [" + competitionResult?.name + "]."
                             competition?.errors?.each {
                                 log.error it
                             }
