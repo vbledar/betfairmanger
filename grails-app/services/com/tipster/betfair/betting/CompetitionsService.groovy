@@ -40,13 +40,15 @@ class CompetitionsService {
         def competitions = new ArrayList<Competition>(1)
 
         Competition competition
+
+        def unknown = JsonConverter.convertFromJson(jsonResponse.result[0].toString(), Competition)
         for (def competitionResults : jsonResponse.result) {
-            competition = JsonConverter.convertFromJson(competitionResults: Competition)
+
             log.debug "Competition id: " + competition?.competitionId
             log.debug "Competition name: " + competition?.competitionName
             log.debug "Result: " + jsonResponse.result
 
-            def unknown = JsonConverter.convertFromJson(jsonResponse.result, Competition)
+
             for (def competitionResult : competitionResults) {
                 TreeMap competitionRecord = (TreeMap) competitionResult
                 log.debug "Has competition key: " + competitionRecord.containsKey("competition")
