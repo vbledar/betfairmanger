@@ -44,15 +44,10 @@ class CompetitionsService {
         log.debug jsonResponse.result
         log.debug jsonResponse.result[0]
         log.debug jsonResponse?.result?.competition
-        def unknown = JsonConverter.convertFromJson(jsonResponse?.result?.competition?.toString(), Competition)
-        log.debug "Competition id: " + unknown?.competitionId
-        log.debug "Competition name: " + unknown?.competitionName
         for (def competitionResults : jsonResponse.result) {
 
-            log.debug "Competition id: " + competition?.competitionId
-            log.debug "Competition name: " + competition?.competitionName
-            log.debug "Result: " + jsonResponse.result
-
+            log.debug "Competition id: " + competitionResults?.id
+            log.debug "Competition name: " + competitionResults?.name
 
             for (def competitionResult : competitionResults) {
                 TreeMap competitionRecord = (TreeMap) competitionResult
