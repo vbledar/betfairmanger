@@ -1,7 +1,6 @@
 package com.tipster.betfair
 
 import com.tipster.betfair.event.Competition
-import sun.security.pkcs11.wrapper.Functions
 
 class Country {
 
