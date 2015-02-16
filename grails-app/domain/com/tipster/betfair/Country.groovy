@@ -23,8 +23,6 @@ class Country {
         countryInformation cache: true
     }
 
-    static fetchMode = [countryInformation: 'eager']
-
     static constraints = {
         countryCode nullable: false
         countryName nullable: true

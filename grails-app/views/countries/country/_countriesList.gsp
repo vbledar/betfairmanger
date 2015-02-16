@@ -5,9 +5,6 @@
             <g:message code="form.field.country.code"/>
         </th>
         <th>
-            <g:message code="form.field.country.iso.three.letter"/>
-        </th>
-        <th>
             <g:message code="form.field.country.name"/>
         </th>
         <th>
@@ -27,9 +24,6 @@
             <tr id="accountRow${country?.countryCode}">
                 <td>
                     ${country?.countryCode}
-                </td>
-                <td>
-                    ${country?.countryInformation?.iso3LetterCode}
                 </td>
                 <td>
                     ${country?.getCountryName()}
