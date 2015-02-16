@@ -72,7 +72,7 @@ class CompetitionsService {
             }
         }
 
-        country.competitionsCounter = Country.countByCountryCode(country.countryCode)
+        country.competitionsCounter = Competition.countByCountry(country)
         if (!country.save()) {
             log.error "Failed to update country's competition counter."
             country.errors.each {
