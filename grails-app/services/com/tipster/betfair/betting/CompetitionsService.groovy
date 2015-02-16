@@ -5,6 +5,7 @@ import com.tipster.betfair.Country
 import com.tipster.betfair.CountryInformation
 import com.tipster.betfair.MarketFilter
 import com.tipster.betfair.event.Competition
+import com.tipster.betfair.util.json.JsonConverter
 import com.tipster.betfair.utils.http.JsonRpcRequest
 import grails.transaction.Transactional
 import groovy.json.JsonSlurper
@@ -40,12 +41,13 @@ class CompetitionsService {
 
         Competition competition
         for (def competitionResults : jsonResponse.result) {
+            competition = JsonConverter.convertFromJson(competitionResults: Competition)
+            log.debug "Competition id: " + competition?.competitionId
+            log.debug "Competition name: " + competition?.competitionName
             log.debug "Result: " + jsonResponse.result
             for (def competitionResult : competitionResults) {
-                LazyMap competitionRecord = (LazyMap) competitionResult
-                log.debug "Has competition key: " + competitionRecord.hasProperty("competition")
-                log.debug "Has id key: " + competitionRecord.hasProperty("id")
-                log.debug "Competition result is: " + competitionResult
+                TreeMap competitionRecord = (TreeMap) competitionResult
+                log.debug "Has competition key: " + competitionRecord.containsKey("competition")
                 try {
                     log.debug "Competition name: " + competitionResult.name
                     log.debug "Competition id: " + competitionResult.id
