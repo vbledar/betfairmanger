@@ -91,24 +91,15 @@
 
         var url = "${createLink(controller: 'events', action: 'manageEventMarkets')}";
         $.post(url, parameters, function (data) {
-            console.log("POST executed");
         }).done(function (data) {
-            console.log("POST success");
             if (data.success === false) {
-                console.log("POST failed");
-                console.log("Server message is: " + data.message)
                 showErrorMessage(data.message);
                 return;
             }
 
-            console.log("POST server response successful");
-            console.log(data);
-            showSuccessMessage("Action completed successfully.");
             $('#marketsContainer').html(data);
             $('#marketsContainer').fadeIn();
         }).fail(function (data) {
-            console.log("POST failed.");
-            console.log(data);
             showErrorMessage(data);
         });
     }

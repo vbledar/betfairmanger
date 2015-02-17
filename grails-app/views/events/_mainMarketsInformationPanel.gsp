@@ -8,9 +8,13 @@
 
         <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
             <div class="btn-group" data-toggle="btn-toggle">
-                <g:link elementId="synchronizeMarketsFromBetfair" controller="events"
-                        action="synchronizeMarketsFromBetfair" event-id="${event?.id}"
-                        class="btn btn-info">
+                <g:link elementId="synchronizeMarketsFromBetfair"
+                        controller="events"
+                        action="synchronizeMarketsFromBetfair"
+                        event-id="${event?.id}"
+                        class="btn btn-info"
+                        div-to-update="persistedMarkets"
+                        div-to-loading="marketsBox">
                     <span class="glyphicon glyphicon-download"></span> <g:message
                         code="markets.management.button.retrieve.markets.betfair"/>
                 </g:link>
@@ -33,29 +37,27 @@
         $('#synchronizeMarketsFromBetfair').off('click').on('click', function (event) {
             event.preventDefault();
 
+            var divToUpdate = $(this).attr('div-to-update');
+            var divToLoading = $(this).attr('div-to-loading');
+
+            addLoadingStateInElement(divToLoading);
+
             var eventId = $(this).attr('event-id');
             var parameters = {};
             parameters.eventId = eventId;
 
             var url = $(this).attr('href')
             $.post(url, parameters, function (data) {
-                console.log("POST executed");
             }).done(function (data) {
-                console.log("POST success");
+                removeLoadingStateFromElement(divToLoading);
                 if (data.success === false) {
-                    console.log("POST failed");
-                    console.log("Server message is: " + data.message)
                     showErrorMessage(data.message);
                     return;
                 }
 
-                console.log("POST server response successful");
-                console.log(data);
-                showSuccessMessage("Markets were synchronized successfully from BetFair.")
                 $('#persistedMarkets').html(data);
             }).fail(function (data) {
-                console.log("POST failed.");
-                console.log(data);
+                removeLoadingStateFromElement(divToLoading);
                 showErrorMessage(data);
             });
         });

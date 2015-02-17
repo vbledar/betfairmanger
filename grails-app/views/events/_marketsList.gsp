@@ -1,5 +1,6 @@
 <div class="row">
     <div class="col-xs-12 col-sm-6 col-md-6">
+
         <div class="panel panel-default table-responsive">
             <table id="marketsTable" class="table table-cell-horizontal-center table-cell-vertical-middle">
 
@@ -13,8 +14,11 @@
                 </tr>
 
                 <g:each in="${markets}" var="market">
-                    <tr id="marketRow${market?.marketId}" class="selectable-market-row selectable-row"
-                        market-id="${market?.marketId}">
+                    <tr id="marketRow${market?.marketId}"
+                        class="selectable-market-row selectable-row"
+                        market-id="${market?.marketId}"
+                        div-to-update="runnersInformationPanel"
+                        div-to-loading="marketsBox">
                         <td class="column-to-hide">
                             ${market?.marketId}
                         </td>
@@ -45,36 +49,34 @@
             $('.selectable-market-row').removeClass('warning');
             $(this).addClass('warning');
 
+            var divToUpdate = $(this).attr('div-to-update');
+            var divToLoading = $(this).attr('div-to-loading');
+
             var marketId = $(this).attr('market-id');
-            $('#runnersInformationPanel').fadeOut();
-            loadMarketRunners(marketId)
+            loadMarketRunners(marketId, divToUpdate, divToLoading)
         })
     });
 
-    function loadMarketRunners(marketId) {
+    function loadMarketRunners(marketId, divToUpdate, divToLoading) {
         var parameters = {};
         parameters.marketId = marketId;
 
+        addLoadingStateInElement(divToLoading);
+
         var url = "${createLink(controller: 'events', action: 'renderMarketRunners')}";
         $.post(url, parameters, function (data) {
-            console.log("POST executed");
+
         }).done(function (data) {
-            console.log("POST success");
+            removeLoadingStateFromElement(divToLoading);
+
             if (data.success === false) {
-                console.log("POST failed");
-                console.log("Server message is: " + data.message)
                 showErrorMessage(data.message);
                 return;
             }
 
-            console.log("POST server response successful");
-            console.log(data);
-            showSuccessMessage("Action completed successfully.");
-            $('#runnersInformationPanel').html(data);
-            $('#runnersInformationPanel').fadeIn();
+            $('#'+divToUpdate).html(data);
         }).fail(function (data) {
-            console.log("POST failed.");
-            console.log(data);
+            removeLoadingStateFromElement(divToLoading);
             showErrorMessage(data);
         });
     }
