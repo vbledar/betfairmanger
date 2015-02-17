@@ -58,7 +58,7 @@
         </div>
     </section>
     <section class="col-xs-12 col-sm-9 col-md-10">
-        <div id="competitionsBoxContainer" class="box box-success">
+        <div id="competitionsBoxContainer">
             <g:render template="competitionsBoxContainer" model="[competitions: competitions]"/>
         </div>
     </section>

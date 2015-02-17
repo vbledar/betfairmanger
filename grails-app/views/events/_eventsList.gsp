@@ -23,7 +23,7 @@
         </tr>
 
         <g:each in="${eventsList.sort {it.openDate}}" var="eventInformation">
-            <tr id="eventRow${eventInformation?.id}" class="selectable-row" event-id="${eventInformation?.id}">
+            <tr id="eventRow${eventInformation?.id}" class="selectable-row show-markets-for-event" event-id="${eventInformation?.id}">
                 <td>
                     ${eventInformation?.id}
                 </td>
@@ -52,7 +52,7 @@
     var competitionSelected = false;
     $(function () {
 
-        $('.selectable-row').off('click').on('click', function (event) {
+        $('.show-markets-for-event').off('click').on('click', function (event) {
             event.preventDefault();
 
             var selectedRowId = $(this).attr('id');
@@ -60,8 +60,8 @@
             if (competitionSelected === false) {
                 competitionSelected = true;
 
-                $('.selectable-row').removeClass("warning");
-                $('.selectable-row').fadeToggle("slow", "linear");
+                $('.show-markets-for-event').removeClass("warning");
+                $('.show-markets-for-event').fadeToggle("slow", "linear");
                 $('#' + selectedRowId).fadeToggle();
                 $('#' + selectedRowId).addClass("warning");
 
@@ -71,8 +71,8 @@
                 loadEventMarkets(eventId);
             } else {
                 competitionSelected = false;
-                $('.selectable-row').removeClass("warning");
-                $('.selectable-row').each(function () {
+                $('.show-markets-for-event').removeClass("warning");
+                $('.show-markets-for-event').each(function () {
                     var currentRowId = $(this).attr('id')
                     if (currentRowId != selectedRowId) {
                         $(this).fadeToggle();

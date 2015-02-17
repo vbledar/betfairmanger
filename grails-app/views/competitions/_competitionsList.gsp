@@ -13,6 +13,9 @@
             <th>
                 <g:message code="form.field.retrieve.automatically"/>
             </th>
+            <th>
+
+            </th>
         </tr>
 
         <g:each in="${competitions}" var="competition">
@@ -31,9 +34,19 @@
                 <td>
                     <label class="label selectable-row ${competition?.automaticRetrieval ? 'label-success' : 'label-danger'} update-competition-auto-state"
                            competition-id="${competition?.competitionId}"
-                           div-to-loading="competitionsBoxContainer">
+                           div-to-loading="competitionsBox">
                         ${competition?.automaticRetrieval ? 'Enabled' : 'Disabled'}
                     </label>
+                </td>
+                <td>
+                    <g:link controller="events"
+                            action="getEventsForCompetition"
+                            competition-id="${competition?.competitionId}"
+                            class="btn btn-sm btn-flat btn-primary events-for-competition"
+                            div-to-update="eventsBoxContainer"
+                            div-to-loading="competitionsBox">
+                        <span class="fa fa-soccer-ball-o"></span>
+                    </g:link>
                 </td>
             </tr>
         </g:each>
@@ -76,6 +89,37 @@
             }
 
             showSuccessMessage(data.message);
+        }).fail(function (data) {
+            removeLoadingStateFromElement(divToLoading);
+            showErrorMessage(data);
+        });
+    });
+
+    $('.events-for-competition').off('click').on('click', function(event) {
+        event.preventDefault();
+
+        var divToUpdate = $(this).attr('div-to-update');
+        var divToLoading = $(this).attr('div-to-loading');
+
+        addLoadingStateInElement(divToLoading);
+
+        var competitionId = $(this).attr('competition-id');
+        console.log("Competition id: " + competitionId);
+        var parameters = {}
+        parameters.competitionId = competitionId;
+
+        var url = $(this).attr('href');
+        $.post(url, parameters, function (data) {
+            console.log("POST executed");
+        }).done(function (data) {
+            removeLoadingStateFromElement(divToLoading);
+
+            if (data.success === false) {
+                showErrorMessage(data.message);
+                return;
+            }
+
+            $('#'+divToUpdate).html(data);
         }).fail(function (data) {
             removeLoadingStateFromElement(divToLoading);
             showErrorMessage(data);

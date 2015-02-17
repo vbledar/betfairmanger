@@ -1,22 +1,27 @@
-<div class="col-xs-12 col-sm-8 col-md-9">
+<div id="eventsBox" class="box box-success">
+    <div class="box-header">
+        <i class="fa fa-soccer-ball-o"></i>
 
-    <div class="panel-body bg-info">
-        <h4>
+        <h3 class="box-title">
             <g:message code="events.management.title"/>
-        </h4>
+        </h3>
 
-        <div class="btn-group btn-group-sm" role="group">
-            <g:link elementId="retrieveEventsFromBetfair" controller="events"
-                    action="synchronizeEventsFromBetfair" competition-id="${competition?.competitionId}"
-                    class="btn btn-info">
-                <span class="glyphicon glyphicon-download"></span> <g:message
-                    code="events.management.button.retrieve.events.betfair"/>
-            </g:link>
+        <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+            <div class="btn-group" data-toggle="btn-toggle">
+                <g:link elementId="retrieveEventsFromBetfair" controller="events"
+                        action="synchronizeEventsFromBetfair" competition-id="${competition?.competitionId}"
+                        class="btn btn-info">
+                    <span class="glyphicon glyphicon-download"></span> <g:message
+                        code="events.management.button.retrieve.events.betfair"/>
+                </g:link>
+            </div>
         </div>
     </div>
 
-    <div id="persistedEvents">
-        <g:render template="/events/persistedEvents" model="[eventsList: eventsList]"/>
+    <div class="box-body">
+        <div id="persistedEvents">
+            <g:render template="/events/persistedEvents" model="[eventsList: eventsList]"/>
+        </div>
     </div>
 </div>
 

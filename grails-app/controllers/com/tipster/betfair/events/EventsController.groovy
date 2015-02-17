@@ -9,6 +9,23 @@ class EventsController {
 
     def eventsService
 
+    def getEventsForCompetition() {
+        Competition competition = Competition.findByCompetitionId(params.competitionId)
+        if (!competition) {
+            render (contentType: 'application/json') {
+                ['success': false, 'message': message(code: 'competitions.management.competition.for.competition.id.not.found', args: [params.competitionId])]
+            }
+        }
+
+        try {
+            def eventsList = eventsService.getEventsByCompetition(competition)
+            render template: '/events/mainEventsInformationPanel', model: [eventsList: eventsList, competition: competition]
+        } catch (ex) {
+            render (contentType: 'application/json') {
+                ['success': false, 'message': ex.message]
+            }
+        }
+    }
     def synchronizeEventsFromBetfair() {
         try {
             Competition competition = Competition.findByCompetitionId(params.competitionId)

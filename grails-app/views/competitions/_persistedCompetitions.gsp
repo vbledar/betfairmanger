@@ -25,8 +25,8 @@
         <div class="dataTables_paginate paging_bootstrap">
             <util:remotePaginate controller="competitions" action="filteredCompetitions" params="[countryCode: params.countryCode]" total="${competitions.getTotalCount()}"
                                  update="persistedCompetitions"
-                                 onLoading="addLoadingStateInElement('competitionsBoxContainer')"
-                                 onComplete="removeLoadingStateFromElement('competitionsBoxContainer')"
+                                 onLoading="addLoadingStateInElement('competitionsBox')"
+                                 onComplete="removeLoadingStateFromElement('competitionsBox')"
                                  max="15"/>
         </div>
     </div>

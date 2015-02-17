@@ -127,7 +127,7 @@ environments {
     }
     test {
         grails.logging.jul.usebridge = true
-        grails.serverURL = "http://tipster11prodbm.cloudapp.net:8080/"
+        grails.serverURL = "http://tipster11prodbm.cloudapp.net:8080/betfairmanger"
         betfair {
             applicationKey = "CXQs7I5AmOYwVmHA"
 

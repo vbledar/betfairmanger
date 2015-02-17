@@ -1,23 +1,30 @@
-%{--<div class="col-xs-12 col-sm-8 col-md-9">--}%
+<div id="marketsBox" class="box box-success">
+    <div class="box-header">
+        <i class="fa fa-soccer-ball-o"></i>
 
-    <div class="page-header">
-        <h4>
+        <h3 class="box-title">
             <g:message code="markets.management.title"/>
-        </h4>
+        </h3>
 
-        <div class="btn-group btn-group-sm" role="group">
-            <g:link elementId="synchronizeMarketsFromBetfair" controller="events"
-                    action="synchronizeMarketsFromBetfair" event-id="${event?.id}"
-                    class="btn btn-info">
-                <span class="glyphicon glyphicon-download"></span> <g:message
-                    code="markets.management.button.retrieve.markets.betfair"/>
-            </g:link>
+        <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+            <div class="btn-group" data-toggle="btn-toggle">
+                <g:link elementId="synchronizeMarketsFromBetfair" controller="events"
+                        action="synchronizeMarketsFromBetfair" event-id="${event?.id}"
+                        class="btn btn-info">
+                    <span class="glyphicon glyphicon-download"></span> <g:message
+                        code="markets.management.button.retrieve.markets.betfair"/>
+                </g:link>
+            </div>
         </div>
     </div>
 
-    <div id="persistedMarkets">
-        <g:render template="persistedMarkets" model="[markets: markets]"/>
+    <div class="box-body">
+        <div id="persistedMarkets">
+            <g:render template="persistedMarkets" model="[markets: markets]"/>
+        </div>
     </div>
+</div>
+
 %{--</div>--}%
 
 <script type="application/javascript">

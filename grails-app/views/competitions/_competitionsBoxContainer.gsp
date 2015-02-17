@@ -1,29 +1,35 @@
-<div class="box-header">
-    <i class="fa fa-paw"></i>
+<div id="competitionsBox" class="box box-success">
+    <div class="box-header">
+        <i class="fa fa-paw"></i>
 
-    <h3 class="box-title">
-        <g:message code="competitions.management.title"/>
-    </h3>
+        <h3 class="box-title">
+            <g:message code="competitions.management.title"/>
+        </h3>
 
-    <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
-        <div class="btn-group" data-toggle="btn-toggle">
-            <g:link elementId="retrieveCompetitionsFromBetFair" controller="competitions"
-                    action="retrieveBetfairCompetitions"
-                    params="[countryCode: params.countryCode]"
-                    div-to-update="persistedCompetitions"
-                    div-to-loading="competitionsBoxContainer"
-                    class="btn btn-info">
-                <span class="glyphicon glyphicon-download"></span> <g:message
-                    code="competitions.management.button.retrieve.competitions.betfair"/>
-            </g:link>
+        <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+            <div class="btn-group" data-toggle="btn-toggle">
+                <g:link elementId="retrieveCompetitionsFromBetFair" controller="competitions"
+                        action="retrieveBetfairCompetitions"
+                        params="[countryCode: params.countryCode]"
+                        div-to-update="persistedCompetitions"
+                        div-to-loading="competitionsBox"
+                        class="btn btn-info">
+                    <span class="glyphicon glyphicon-download"></span> <g:message
+                        code="competitions.management.button.retrieve.competitions.betfair"/>
+                </g:link>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-body">
+        <div id="persistedCompetitions">
+            <g:render template="persistedCompetitions" model="[competitions: competitions]"/>
         </div>
     </div>
 </div>
 
-<div class="box-body">
-    <div id="persistedCompetitions">
-        <g:render template="persistedCompetitions" model="[competitions: competitions]"/>
-    </div>
+<div id="eventsBoxContainer" class="box box-success">
+
 </div>
 
 <g:javascript>
