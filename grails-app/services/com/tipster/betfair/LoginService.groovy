@@ -31,10 +31,24 @@ class LoginService extends BaseService {
     def retrieveSessionToken() {
         String sessionToken
 
+        BetfairSession sessionRecord = BetfairSession.find("FROM BetfairSession ORDER BY dateCreated DESC")
+        use (groovy.time.TimeCategory) {
+            def difference = Calendar.getInstance().getTime() - sessionRecord.dateCreated
+            if (difference.hours < 2) return sessionRecord.session
+        }
+
+        String filename = grailsApplication.config.betfair.certificateFilename
+
+        // search in user home directory
+        String homeDirectoryPath = System.getProperty("user.home")
+        if (!homeDirectoryPath.endsWith("/") || !homeDirectoryPath.endsWith("\\"))
+            homeDirectoryPath = homeDirectoryPath + "/"
+        File certificate = new File(homeDirectoryPath + filename)
+
         String username = grailsApplication.config.betfair.username
         String password = grailsApplication.config.betfair.password
         String certificatePassword = grailsApplication.config.betfair.certificatePassword
-        File certificate = new File(grailsApplication.config.betfair.certificateFilename)
+
         String applicationKey = grailsApplication.config.betfair.applicationKey
 
         DefaultHttpClient httpClient = new DefaultHttpClient()
@@ -61,7 +75,14 @@ class LoginService extends BaseService {
             JSONElement responseJson = grails.converters.JSON.parse(responseString)
             if (responseJson.loginStatus && responseJson.loginStatus == 'SUCCESS') {
                 sessionToken = responseJson.sessionToken
-				log.error "Session token is: " + sessionToken
+
+                sessionRecord = new BetfairSession(session: sessionToken)
+                if (!sessionRecord.save()) {
+                    log.error "Failed to save newly created betfair session instance."
+                    sessionRecord.errors.each {
+                        log.error it
+                    }
+                }
 			}
             else {
                 log.error "Failed to retrieve session token because:"

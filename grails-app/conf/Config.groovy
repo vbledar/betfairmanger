@@ -97,7 +97,7 @@ environments {
             username = "tipsterapi"
             password = "tipster112015"
             certificatePassword = "tipster112015"
-            certificateFilename = "C:/client-2048.p12"
+            certificateFilename = "client-2048.p12"
 
             api {
                 betting {
