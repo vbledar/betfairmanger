@@ -32,9 +32,11 @@ class LoginService extends BaseService {
         String sessionToken
 
         BetfairSession sessionRecord = BetfairSession.find("FROM BetfairSession ORDER BY dateCreated DESC")
-        use (groovy.time.TimeCategory) {
-            def difference = Calendar.getInstance().getTime() - sessionRecord.dateCreated
-            if (difference.hours < 2) return sessionRecord.session
+        if (sessionRecord) {
+            use(groovy.time.TimeCategory) {
+                def difference = Calendar.getInstance().getTime() - sessionRecord.dateCreated
+                if (difference.hours < 2) return sessionRecord.session
+            }
         }
 
         String filename = grailsApplication.config.betfair.certificateFilename

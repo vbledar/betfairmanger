@@ -139,4 +139,6 @@ databaseChangeLog = {
 	include file: 'add-events-counter.groovy'
 
 	include file: 'add-country-name.groovy'
+
+	include file: 'add-betfair-session.groovy'
 }
