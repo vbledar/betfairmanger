@@ -73,7 +73,7 @@ class CompetitionsService {
         }
 
         country.competitionsCounter = Competition.countByCountry(country)
-        if (!country.save(flush: flush)) {
+        if (!country.save()) {
             log.error "Failed to update country's competition counter."
             country.errors.each {
                 log.error it

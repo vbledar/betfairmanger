@@ -5,7 +5,6 @@ import com.tipster.betfair.event.Competition
 import com.tipster.betfair.event.MarketType
 import grails.transaction.Transactional
 
-@Transactional
 class JobService {
 
     def competitionsService
