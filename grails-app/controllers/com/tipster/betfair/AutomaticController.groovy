@@ -16,10 +16,7 @@ class AutomaticController {
         def countries = Country.findAll()
         session["countries"] = countries
 
-        render (contentType: 'application/json') {
-            ['success': Boolean.TRUE]
-        }
-
+        redirect(controller: 'competitions', action: 'manageCompetitions')
     }
 
 }
