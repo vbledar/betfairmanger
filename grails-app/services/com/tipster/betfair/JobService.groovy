@@ -20,7 +20,7 @@ class JobService {
 
             log.info "Updating competitions based on countries."
             try {
-                def countries = Country.findByAutomaticRetrieval(Boolean.TRUE)
+                def countries = Country.findAllByAutomaticRetrieval(Boolean.TRUE)
 
                 log.info "About to update competitions for " + countries.size() + " countries."
                 countries.each {
@@ -39,7 +39,7 @@ class JobService {
 
             log.info "Updating events based on competitions."
             try {
-                def competitions = Competition.findByAutomaticRetrieval(Boolean.TRUE)
+                def competitions = Competition.findAllByAutomaticRetrieval(Boolean.TRUE)
                 competitions.each {
                     eventsService.synchronizeEventsFromBetfair(it)
                 }
@@ -49,8 +49,8 @@ class JobService {
 
             log.info "Updating markets based on market types and competitions."
             try {
-                def marketTypes = MarketType.findByAutomaticRetrieval(Boolean.TRUE)
-                def competitions = Competition.findByAutomaticRetrieval(Boolean.TRUE)
+                def marketTypes = MarketType.findAllByAutomaticRetrieval(Boolean.TRUE)
+                def competitions = Competition.findAllByAutomaticRetrieval(Boolean.TRUE)
                 competitions.each {
                     it.events.each {
                         eventsService.synchronizeEventMarketsFromBetfair(it, marketTypes)
@@ -62,7 +62,7 @@ class JobService {
 
             log.info "Updating market odds based on markets."
             try {
-                def competitions = Competition.findByAutomaticRetrieval(Boolean.TRUE)
+                def competitions = Competition.findAllByAutomaticRetrieval(Boolean.TRUE)
                 competitions.each {
                     it.events.each {
                         it.markets.each {
