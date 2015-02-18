@@ -8,6 +8,10 @@ class AutomaticController {
 
         jobService.automaticSynchronizationWithBetfair(Boolean.TRUE)
 
+        render (contentType: 'application/json') {
+            ['success': Boolean.TRUE]
+        }
+
     }
 
 }
