@@ -14,6 +14,8 @@ class CompetitionsController extends BaseController {
         if (!params.offset) params.offset = 0
 
         def competitions = competitionsService.retrieveCompetitions(params)
+
+        log.error "Competitions found are: " + competitions.getTotalCount()
         render view: 'manageCompetitions', model: [competitions: competitions]
     }
 

@@ -27,7 +27,7 @@ class JobService {
                     log.info "Updating competitions for country " + it.countryName
 
                     try {
-                        competitionsService.retrieveCompetitionsFromBetfairForCountry(it, Boolean.TRUE)
+                        competitionsService.retrieveCompetitionsFromBetfairForCountry(it, Boolean.FALSE)
                     } catch (ex) {
                         log.error "Failed to update competitions for country " + it.countryName
                     }
@@ -41,7 +41,7 @@ class JobService {
             try {
                 def competitions = Competition.findAllByAutomaticRetrieval(Boolean.TRUE)
                 competitions.each {
-                    eventsService.synchronizeEventsFromBetfair(it, Boolean.TRUE)
+                    eventsService.synchronizeEventsFromBetfair(it, Boolean.FALSE)
                 }
             } catch (ex) {
                 log.error "Failed to update events based on competitions.", ex
@@ -53,7 +53,7 @@ class JobService {
                 def competitions = Competition.findAllByAutomaticRetrieval(Boolean.TRUE)
                 competitions.each {
                     it.events.each {
-                        eventsService.synchronizeEventMarketsFromBetfair(it, marketTypes, Boolean.TRUE)
+                        eventsService.synchronizeEventMarketsFromBetfair(it, marketTypes, Boolean.FALSE)
                     }
                 }
             } catch (ex) {
@@ -66,7 +66,7 @@ class JobService {
                 competitions.each {
                     it.events.each {
                         it.markets.each {
-                            eventsService.synchronizeEventMarketOddsFromBetfair(it, Boolean.TRUE)
+                            eventsService.synchronizeEventMarketOddsFromBetfair(it, Boolean.FALSE)
                         }
                     }
                 }
