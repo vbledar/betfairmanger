@@ -8,6 +8,10 @@ class AutomaticController {
 
         jobService.automaticSynchronizationWithBetfair(Boolean.TRUE)
 
+        // update countries session information
+        def countries = Country.findAll()
+        session["countries"] = countries
+
         render (contentType: 'application/json') {
             ['success': Boolean.TRUE]
         }

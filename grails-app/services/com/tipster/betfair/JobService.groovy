@@ -80,7 +80,7 @@ class JobService {
         }
 
         if (automatedJobRetrieval) {
-            if (automatedJobRetrieval.save()) {
+            if (!automatedJobRetrieval.save()) {
                 log.error "Failed to persist automated job retrieval monitoring record"
                 automatedJobRetrieval.errors.each {
                     log.error it
