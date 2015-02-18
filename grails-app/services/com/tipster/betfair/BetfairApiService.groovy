@@ -40,6 +40,7 @@ class BetfairApiService extends BaseService {
                     throw new BetfairWrapperException(betfairError: betfairError)
                 } else {
                     log.error "Something is very wrong here. This occassion should never happen."
+                    log.error "Retrieved json object is: " + json
                 }
             }
 
