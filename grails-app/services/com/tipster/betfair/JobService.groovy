@@ -27,7 +27,7 @@ class JobService {
                     log.info "Updating competitions for country " + it.countryName
 
                     try {
-                        competitionsService.retrieveCompetitionsFromBetfairForCountry(it, Boolean.FALSE)
+                        competitionsService.retrieveCompetitionsFromBetfairForCountry(it)
                     } catch (ex) {
                         log.error "Failed to update competitions for country " + it.countryName
                     }
@@ -41,7 +41,7 @@ class JobService {
             try {
                 def competitions = Competition.findAllByAutomaticRetrieval(Boolean.TRUE)
                 competitions.each {
-                    eventsService.synchronizeEventsFromBetfair(it, Boolean.FALSE)
+                    eventsService.synchronizeEventsFromBetfair(it)
                 }
             } catch (ex) {
                 log.error "Failed to update events based on competitions.", ex
@@ -53,7 +53,7 @@ class JobService {
                 def competitions = Competition.findAllByAutomaticRetrieval(Boolean.TRUE)
                 competitions.each {
                     it.events.each {
-                        eventsService.synchronizeEventMarketsFromBetfair(it, marketTypes, Boolean.FALSE)
+                        eventsService.synchronizeEventMarketsFromBetfair(it, marketTypes)
                     }
                 }
             } catch (ex) {
@@ -66,7 +66,7 @@ class JobService {
                 competitions.each {
                     it.events.each {
                         it.markets.each {
-                            eventsService.synchronizeEventMarketOddsFromBetfair(it, Boolean.FALSE)
+                            eventsService.synchronizeEventMarketOddsFromBetfair(it)
                         }
                     }
                 }
@@ -79,14 +79,14 @@ class JobService {
             log.error "Automatic job execution failed.", ex
         }
 
-        if (automatedJobRetrieval) {
-            if (!automatedJobRetrieval.save()) {
-                log.error "Failed to persist automated job retrieval monitoring record"
-                automatedJobRetrieval.errors.each {
-                    log.error it
-                }
-            }
-        }
+//        if (automatedJobRetrieval) {
+//            if (!automatedJobRetrieval.save()) {
+//                log.error "Failed to persist automated job retrieval monitoring record"
+//                automatedJobRetrieval.errors.each {
+//                    log.error it
+//                }
+//            }
+//        }
     }
 
 }
