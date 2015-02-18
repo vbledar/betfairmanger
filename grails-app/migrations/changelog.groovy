@@ -141,4 +141,6 @@ databaseChangeLog = {
 	include file: 'add-country-name.groovy'
 
 	include file: 'add-betfair-session.groovy'
+
+	include file: 'add-automated-job-record.groovy'
 }
