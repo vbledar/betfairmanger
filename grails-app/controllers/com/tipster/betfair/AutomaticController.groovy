@@ -6,7 +6,11 @@ class AutomaticController {
 
     def updateMarketsJob() {
 
-        jobService.automaticSynchronizationWithBetfair(Boolean.TRUE)
+        try {
+            jobService.automaticSynchronizationWithBetfair(Boolean.TRUE)
+        } catch (ex) {
+            log.error "Something went wrong.", ex
+        }
 
         // update countries session information
         def countries = Country.findAll()
