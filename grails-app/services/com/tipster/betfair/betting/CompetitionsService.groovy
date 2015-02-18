@@ -42,9 +42,6 @@ class CompetitionsService {
 
         Competition competition
 
-        log.debug jsonResponse.result
-        log.debug jsonResponse.result[0]
-        log.debug jsonResponse?.result?.competition
         for (def competitionResults : jsonResponse.result) {
             LazyMap competitionRecord = (LazyMap) competitionResults
             log.debug "Competition record is: " + competitionRecord?.toString()

@@ -32,7 +32,7 @@
                 <ul class="list-group" style="max-height: 500px; overflow-y: scroll">
                     <g:each in="${session["countries"]}" var="country">
                         <li div-to-update="competitionsBoxContainer"
-                            div-to-loading="competitionsBoxContainer"
+                            div-to-loading="competitionsBox"
                             class="list-group-item selectable-row competition-filter-by-company ${params.countryCode && params.countryCode?.equalsIgnoreCase(country?.countryCode) ? 'active' : ''}" country-code="${country?.countryCode}">
                             <span class="badge">
                                 ${country?.competitionsCounter ? country?.competitionsCounter : 0}

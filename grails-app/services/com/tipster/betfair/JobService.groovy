@@ -3,7 +3,6 @@ package com.tipster.betfair
 import com.tipster.betfair.event.AutomatedJobRetrieval
 import com.tipster.betfair.event.Competition
 import com.tipster.betfair.event.MarketType
-import grails.transaction.Transactional
 
 class JobService {
 
