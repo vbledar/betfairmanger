@@ -21,8 +21,16 @@ class JobService {
             log.info "Updating competitions based on countries."
             try {
                 def countries = Country.findByAutomaticRetrieval(Boolean.TRUE)
+
+                log.info "About to update competitions for " + countries.size() + " countries."
                 countries.each {
-                    competitionsService.retrieveCompetitionsFromBetfairForCountry(it)
+                    log.info "Updating competitions for country " + it.countryName
+
+                    try {
+                        competitionsService.retrieveCompetitionsFromBetfairForCountry(it)
+                    } catch (ex) {
+                        log.error "Failed to update competitions for country " + it.countryName
+                    }
                 }
                 log.info "Update of competitions based on countries was successful."
             } catch (ex) {
