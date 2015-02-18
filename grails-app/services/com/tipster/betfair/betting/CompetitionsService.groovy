@@ -18,7 +18,7 @@ class CompetitionsService {
     def grailsApplication
     def betfairApiService
 
-    def retrieveCompetitionsFromBetfairForCountry(Country country) {
+    def retrieveCompetitionsFromBetfairForCountry(Country country, Boolean flush) {
         String api = grailsApplication.config.betfair.api.betting.bettingApi
         String apiVersion = grailsApplication.config.betfair.api.betting.bettingApiVersion
         String action = grailsApplication.config.betfair.api.betting.actionListCompetitions
@@ -59,7 +59,7 @@ class CompetitionsService {
                         // create a new competition instance
                         competition = new Competition(competitionId: competitionInformationRecord.get("id"), competitionName: competitionInformationRecord.get("name"), country: country)
 
-                        if (!competition.save()) {
+                        if (!competition.save(flush: flush)) {
                             log.error "Failed to persist competition with id [" + competitionInformationRecord.get("id") + "] and name [" + competitionInformationRecord.get("name") + "]."
                             competition?.errors?.each {
                                 log.error it
@@ -73,7 +73,7 @@ class CompetitionsService {
         }
 
         country.competitionsCounter = Competition.countByCountry(country)
-        if (!country.save()) {
+        if (!country.save(flush: flush)) {
             log.error "Failed to update country's competition counter."
             country.errors.each {
                 log.error it

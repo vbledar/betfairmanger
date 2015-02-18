@@ -82,7 +82,7 @@ class EventsService extends BaseService {
         }
     }
 
-    def synchronizeEventsFromBetfair(Competition competition) {
+    def synchronizeEventsFromBetfair(Competition competition, Boolean flush) {
         String api = grailsApplication.config.betfair.api.betting.bettingApi
         String apiVersion = grailsApplication.config.betfair.api.betting.bettingApiVersion
         String action = grailsApplication.config.betfair.api.betting.actionListEvents
@@ -119,7 +119,7 @@ class EventsService extends BaseService {
             event.openDate = javax.xml.bind.DatatypeConverter.parseDateTime(eventInformation.openDate).getTime()
 
             try {
-                if (!event.save()) {
+                if (!event.save(flush: flush)) {
                     log.error "Failed to persist event by id [" + event.id + "] and name [" + event.name + "]."
                     event.errors.each {
                         log.error it
@@ -131,12 +131,12 @@ class EventsService extends BaseService {
         }
     }
 
-    def synchronizeEventMarketsFromBetfair(Event event, Set<MarketType> marketTypes) {
+    def synchronizeEventMarketsFromBetfair(Event event, Set<MarketType> marketTypes, Boolean flush) {
         Boolean hasSuccess = Boolean.FALSE
         Boolean hasException = Boolean.FALSE
         for (MarketType marketType : marketTypes) {
             try {
-                synchronizeEventMarketFromBetfair(event, marketType)
+                synchronizeEventMarketFromBetfair(event, marketType, flush)
                 hasSuccess = Boolean.TRUE
             } catch(ex) {
                 log.error "Exception caught while attempting to synchronize event markets from betfair.", ex
@@ -145,7 +145,7 @@ class EventsService extends BaseService {
         }
     }
 
-    def synchronizeEventMarketFromBetfair(Event event, MarketType marketType) {
+    def synchronizeEventMarketFromBetfair(Event event, MarketType marketType, Boolean flush) {
         String api = grailsApplication.config.betfair.api.betting.bettingApi
         String apiVersion = grailsApplication.config.betfair.api.betting.bettingApiVersion
         String action = grailsApplication.config.betfair.api.betting.actionListMarketCatalogue
@@ -197,7 +197,7 @@ class EventsService extends BaseService {
             }
 
             try {
-                if (!market.save()) {
+                if (!market.save(flush: flush)) {
                     log.error "Failed to persist market by id [" + market.marketId + "] and name [" + market.marketName + "]."
                     market.errors.each {
                         log.error it
@@ -209,7 +209,7 @@ class EventsService extends BaseService {
         }
     }
 
-    def synchronizeEventMarketOddsFromBetfair(Market market) {
+    def synchronizeEventMarketOddsFromBetfair(Market market, Boolean flush) {
         String api = grailsApplication.config.betfair.api.betting.bettingApi
         String apiVersion = grailsApplication.config.betfair.api.betting.bettingApiVersion
         String action = grailsApplication.config.betfair.api.betting.actionListMarketBook
@@ -247,7 +247,7 @@ class EventsService extends BaseService {
                                 log.debug "Runner odd is: " + runnerOdd
                                 runner.runnerOdd = Double.parseDouble runnerOdd
 
-                                if (!runner.save()) {
+                                if (!runner.save(flush: flush)) {
                                     log.error "Failed to persist runner [" + runner?.selectionid + "] with updated odds."
                                     runner.errors.each {
                                         log.error it
