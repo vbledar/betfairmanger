@@ -2,6 +2,7 @@ package com.tipster.betfair
 
 import com.tipster.betfair.event.AutomatedJobRetrieval
 import com.tipster.betfair.event.Competition
+import com.tipster.betfair.event.Event
 import com.tipster.betfair.event.MarketType
 
 class JobService {
@@ -27,7 +28,7 @@ class JobService {
                     try {
                         competitionsService.retrieveCompetitionsFromBetfairForCountry(it)
                     } catch (ex) {
-                        log.error "Failed to update competitions for country " + it.countryName
+                        log.error "Failed to update competitions for country " + it.countryName + ".", ex
                     }
                 }
                 log.info "Update of competitions based on countries was successful."
@@ -39,7 +40,11 @@ class JobService {
             try {
                 def competitions = Competition.findAllByAutomaticRetrieval(Boolean.TRUE)
                 competitions.each {
-                    eventsService.synchronizeEventsFromBetfair(it)
+                    try {
+                        eventsService.synchronizeEventsFromBetfair(it)
+                    } catch(ex) {
+                        log.error "Failed to update events for competition " + it.competitionName + ".", ex
+                    }
                 }
             } catch (ex) {
                 log.error "Failed to update events based on competitions.", ex
@@ -50,8 +55,13 @@ class JobService {
                 def marketTypes = MarketType.findAllByAutomaticRetrieval(Boolean.TRUE)
                 def competitions = Competition.findAllByAutomaticRetrieval(Boolean.TRUE)
                 competitions.each {
+                    Competition competition = it
                     it.events.each {
-                        eventsService.synchronizeEventMarketsFromBetfair(it, marketTypes)
+                        try {
+                            eventsService.synchronizeEventMarketsFromBetfair(it, marketTypes)
+                        } catch(ex) {
+                            log.error "Failed to update event markets for competition " + competition.competitionName + " and event " + it.name + ".", ex
+                        }
                     }
                 }
             } catch (ex) {
@@ -62,12 +72,18 @@ class JobService {
             try {
                 def competitions = Competition.findAllByAutomaticRetrieval(Boolean.TRUE)
                 competitions.each {
+                    Competition competition = it
                     log.info "Processing competition " + it.competitionName
                     it.events.each {
+                        Event event = it
                         log.info "Processing event " + it.name
                         it.markets.each {
                             log.info "Processing market " + it.marketName
-                            eventsService.synchronizeEventMarketOddsFromBetfair(it)
+                            try {
+                                eventsService.synchronizeEventMarketOddsFromBetfair(it)
+                            } catch (ex) {
+                                log.error "Failed to update event market odds for competition " + competition.competitionName + " and event " + event.name + " and market " + it.marketName + ".", ex
+                            }
                         }
                     }
                 }
