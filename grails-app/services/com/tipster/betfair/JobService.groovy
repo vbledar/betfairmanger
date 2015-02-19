@@ -62,8 +62,11 @@ class JobService {
             try {
                 def competitions = Competition.findAllByAutomaticRetrieval(Boolean.TRUE)
                 competitions.each {
+                    log.info "Processing competition " + it.competitionName
                     it.events.each {
+                        log.info "Processing event " + it.name
                         it.markets.each {
+                            log.info "Processing market " + it.marketName
                             eventsService.synchronizeEventMarketOddsFromBetfair(it)
                         }
                     }
