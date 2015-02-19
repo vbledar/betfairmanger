@@ -37,7 +37,7 @@ class MarketTypesService {
         def marketTypes = new ArrayList<MarketType>(1)
 
         MarketType marketType
-        for (def marketTypesResults : jsonResponse.result) {
+        for (def marketTypesResults : jsonResponse?.result) {
             for (def marketTypeResult : marketTypesResults) {
                 log.debug "Attempting to process: " + marketTypeResult
                 try {

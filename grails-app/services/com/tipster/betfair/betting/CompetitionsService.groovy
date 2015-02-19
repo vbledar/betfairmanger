@@ -106,7 +106,7 @@ class CompetitionsService {
 
         Competition competition
 
-        for (def competitionResults : jsonResponse.result) {
+        for (def competitionResults : jsonResponse?.result) {
             for (def competitionResult : competitionResults) {
                 log.debug "Attempting to process: " + competitionResult
                 try {

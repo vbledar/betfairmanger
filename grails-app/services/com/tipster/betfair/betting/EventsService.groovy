@@ -51,7 +51,7 @@ class EventsService extends BaseService {
         Country country
         CountryInformation countryInformation
 
-        for (def countryCode : jsonResponse.result) {
+        for (def countryCode : jsonResponse?.result) {
             iso2LetterCode = countryCode.countryCode
 
             if (iso2LetterCode) {
@@ -102,7 +102,7 @@ class EventsService extends BaseService {
         def jsonResponse = betfairApiService.executeBetfairApiCall(rpcRequest)
 
         Event event
-        for (def record : jsonResponse.result) {
+        for (def record : jsonResponse?.result) {
             LazyMap eventInformation = (LazyMap) record.event
 
             event = Event.findById(eventInformation.id)
@@ -136,7 +136,7 @@ class EventsService extends BaseService {
         Boolean hasException = Boolean.FALSE
         for (MarketType marketType : marketTypes) {
             try {
-                synchronizeEventMarketFromBetfair(event, marketType, flush)
+                synchronizeEventMarketFromBetfair(event, marketType)
                 hasSuccess = Boolean.TRUE
             } catch(ex) {
                 log.error "Exception caught while attempting to synchronize event markets from betfair.", ex
@@ -175,7 +175,7 @@ class EventsService extends BaseService {
 
         Market market
         Runner runner
-        for (def record : jsonResponse.result) {
+        for (def record : jsonResponse?.result) {
             LazyMap marketInformation = (LazyMap) record
 
             market = Market.findByMarketId(marketInformation.marketId)
@@ -232,7 +232,7 @@ class EventsService extends BaseService {
 
         def jsonResponse = betfairApiService.executeBetfairApiCall(rpcRequest)
 
-        for (def record : jsonResponse.result) {
+        for (def record : jsonResponse?.result) {
             LazyMap marketInformation = (LazyMap) record
             if (marketInformation.containsKey("runners")) {
                 for (def runnerRecord : marketInformation.get("runners")) {
