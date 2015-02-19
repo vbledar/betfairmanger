@@ -131,7 +131,7 @@ class EventsService extends BaseService {
         }
     }
 
-    def synchronizeEventMarketsFromBetfair(Event event, Set<MarketType> marketTypes) {
+    def synchronizeEventMarketsFromBetfair(Event event, def marketTypes) {
         Boolean hasSuccess = Boolean.FALSE
         Boolean hasException = Boolean.FALSE
         for (MarketType marketType : marketTypes) {
