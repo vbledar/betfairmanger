@@ -122,6 +122,10 @@ environments {
 
                     actionApplicationKeys = "getDeveloperAppKeys"
                 }
+                results {
+                    resultsEndpoint = "http://rss.betfair.com/RSS.aspx"
+                    format = "rss"
+                }
             }
         }
     }

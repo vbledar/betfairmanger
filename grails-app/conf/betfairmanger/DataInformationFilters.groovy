@@ -9,8 +9,6 @@ class DataInformationFilters {
         all(controller:'*', action:'*') {
             before = {
                 // store countries and countries information in session
-                if (!session["countriesInformation"])
-                    session["countriesInformation"] = CountryInformation.list()
                 if (!session["countries"])
                     session["countries"] = Country.list()
             }

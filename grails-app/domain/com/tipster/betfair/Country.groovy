@@ -20,7 +20,6 @@ class Country {
     static mapping = {
         id name: 'countryCode', generator: 'assigned'
         cache true
-        countryInformation cache: true
     }
 
     static constraints = {

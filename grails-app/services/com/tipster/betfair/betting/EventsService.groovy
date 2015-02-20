@@ -278,4 +278,18 @@ class EventsService extends BaseService {
             eq ('event', event)
         }
     }
+
+    def getAllEventsBetweenDatesWithUnsettledMarkets(Date dateFrom, Date dateTo) {
+        def criteria = Event.createCriteria()
+        def results = criteria.list {
+
+            between ('openDate', dateFrom, dateTo)
+            markets {
+                or {
+                    eq('settled', Boolean.FALSE)
+                    isNull('settled')
+                }
+            }
+        }
+    }
 }

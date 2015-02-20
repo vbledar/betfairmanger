@@ -16,7 +16,7 @@
         </tr>
 
         <g:each in="${runners}" var="runner">
-            <tr>
+            <tr class="${runner?.winner ? 'bg-success' : ''}">
                 <td>
                     ${runner?.runnerName}
                 </td>

@@ -10,11 +10,15 @@ class Runner {
 
     Double runnerOdd
 
+    Boolean winner
+
     static constraints = {
         selectionid nullable: false
         runnerName nullable: false
         sortPriority nullable: false
 
         runnerOdd nullable: true
+
+        winner nullable: true
     }
 }

@@ -143,4 +143,8 @@ databaseChangeLog = {
 	include file: 'add-betfair-session.groovy'
 
 	include file: 'add-automated-job-record.groovy'
+
+	include file: 'add-result-feed-entry.groovy'
+
+	include file: 'add-winner-column-on-runner.groovy'
 }
