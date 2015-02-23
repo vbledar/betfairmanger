@@ -281,7 +281,20 @@ class EventsService extends BaseService {
 
     def getAllEventsBetweenDatesWithUnsettledMarkets(Date dateFrom, Date dateTo) {
         def criteria = Event.createCriteria()
-        def results = criteria.list {
+        def results = criteria.listDistinct {
+            between ('openDate', dateFrom, dateTo)
+            markets {
+                or {
+                    eq('settled', Boolean.FALSE)
+                    isNull('settled')
+                }
+            }
+        }
+    }
+
+    Integer anyUnsettledMarketsInGivenDateRange(Date dateFrom, Date dateTo) {
+        def criteria = Event.createCriteria()
+        def counter = criteria.get {
 
             between ('openDate', dateFrom, dateTo)
             markets {
@@ -289,6 +302,10 @@ class EventsService extends BaseService {
                     eq('settled', Boolean.FALSE)
                     isNull('settled')
                 }
+            }
+
+            projections {
+                countDistinct('id')
             }
         }
     }

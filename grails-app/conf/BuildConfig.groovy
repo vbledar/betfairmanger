@@ -44,6 +44,8 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
+
+        mavenRepo "http://gwtwiki.googlecode.com/svn/maven-repository"
     }
 
     dependencies {
@@ -51,6 +53,9 @@ grails.project.dependency.resolution = {
         runtime 'mysql:mysql-connector-java:5.1.29'
         // runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
         test "org.grails:grails-datastore-test-support:1.0-grails-2.4"
+
+        compile "info.bliki.wiki:bliki-core:3.0.19"
+        compile "info.bliki.wiki:bliki-addons:3.0.19"
     }
 
     plugins {

@@ -147,4 +147,6 @@ databaseChangeLog = {
 	include file: 'add-result-feed-entry.groovy'
 
 	include file: 'add-winner-column-on-runner.groovy'
+
+	include file: 'add-team-record.groovy'
 }

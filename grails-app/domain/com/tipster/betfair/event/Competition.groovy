@@ -13,7 +13,7 @@ class Competition {
 
     transient Integer eventsCounter
 
-    static hasMany = [events: Event]
+    static hasMany = [events: Event, teams: Team]
 
     static constraints = {
         competitionId nullable: false, blank: false

@@ -47,6 +47,15 @@
                             div-to-loading="competitionsBox">
                         <span class="fa fa-soccer-ball-o"></span>
                     </g:link>
+                    <g:link controller="competitions"
+                            action="competitionTeams"
+                            competition-id="${competition?.competitionId}"
+                            class="btn btn-sm btn-flat btn-primary events-for-competition"
+                            div-to-update="eventsBoxContainer"
+                            div-to-loading="competitionsBox">
+                        <span class="fa fa-users"></span>
+                    </g:link>
+
                 </td>
             </tr>
         </g:each>

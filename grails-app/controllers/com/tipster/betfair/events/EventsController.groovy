@@ -15,6 +15,7 @@ class EventsController {
             render (contentType: 'application/json') {
                 ['success': false, 'message': message(code: 'competitions.management.competition.for.competition.id.not.found', args: [params.competitionId])]
             }
+            return
         }
 
         try {

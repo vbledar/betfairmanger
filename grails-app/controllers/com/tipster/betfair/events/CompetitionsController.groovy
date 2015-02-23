@@ -8,6 +8,7 @@ import com.tipster.betfair.event.MarketType
 class CompetitionsController extends BaseController {
 
     def competitionsService
+    def wikiPediaService
 
     def manageCompetitions() {
         if (!params.max) params.max = 15
@@ -76,5 +77,31 @@ class CompetitionsController extends BaseController {
                 ['success': false, 'message': message(code: 'competitions.management.retrieve.competitions.failed')]
             }
         }
+    }
+
+    def competitionTeams() {
+        Competition competition = Competition.findByCompetitionId(params.competitionId)
+        if (!competition) {
+            render (contentType: 'application/json') {
+                ['success': false, 'message': message(code: 'competitions.management.competition.for.competition.id.not.found', args: [params.competitionId])]
+            }
+            return
+        }
+
+        try {
+            def teams = competition.teams
+            render template: 'team/manageTeams', model: [competition: competition]
+        } catch (ex) {
+            render (contentType: 'application/json') {
+                ['success': false, 'message': ex.message]
+            }
+        }
+    }
+
+    def retrieveTeamsFromBetfair() {
+
+        wikiPediaService.retrieveFootballClubInformation("Chelsea FC")
+
+        redirect controller: 'competitions', action: 'competitionTeams', id: params.competitionId
     }
 }

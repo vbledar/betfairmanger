@@ -87,6 +87,14 @@ grails.hibernate.osiv.readonly = false
 
 grails.plugins.remotepagination.enableBootstrap=true
 
+wikipedia {
+    endpoint = "http://en.wikipedia.org/w/api.php"
+
+    format = "json"
+
+    userAgentHeader = "Tipster11 (http://www.tipster11.com); nikos@tipster11.com"
+}
+
 environments {
     development {
         grails.logging.jul.usebridge = true
@@ -193,4 +201,7 @@ log4j.main = {
            'net.sf.ehcache.hibernate'
 
     debug 'grails.app'
+
+    trace "grails.app.controllers.ResultsRssController"
+    trace "grails.app.services.ResultsRssService"
 }
